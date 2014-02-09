@@ -1,6 +1,6 @@
 //All editing permissions go through the User model that comes in Meteor
 
-// Shows - {name:String, home_page:url, description:String, s3:Url, created_at:Date}
+// Shows - {name:String, home_page:url, description:String, s3:Url, created_at:Date, route:String} //route looks like show name with spaces replaced by -, e.g. Joe-Rogan-Experience
 Shows = new Meteor.Collection('shows');
 
 // Episode - {name:String, home_url:String, show_id:String, number:Number, edited:Boolean, seconds:Number, s3:Url, created_at:Date, updated_at:Date, home_notes:String}
