@@ -4,9 +4,11 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-autopublish
 insecure
 preserve-inputs
 iron-router
 accounts-base
 accounts-password
+bootstrap-themes
+less
+accounts-ui-bootstrap-3
