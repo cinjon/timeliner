@@ -16,9 +16,6 @@ var count_text_chars = function(text) {
     return text.text().length;
 };
 
-Template.editor.rendered = function() {
-}
-
 Template.editor.helpers({
     start_timing: function() {
         return {'label':'Start', 'id':'start_time'};
