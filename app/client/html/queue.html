@@ -2,16 +2,16 @@
   <div class="row-fluid">
     <h3>Welcome to the Queue</h3>
   </div>
-  {{#each items}}
+  {{#each shows}}
   <hr>
   <div class="row-fluid">
     <div class="span3">
-      {{show.name}}
+      {{show_name}}
     </div>
     <div class="span7">
       <ul>
       {{#each episodes}}
-        <li><a href="{{pathFor 'editor'}}">{{name}}</a></li>
+        <li><a href="{{pathFor 'editor'}}">{{episode_name}}</a></li>
       {{/each}}
       </ul>
     </div>

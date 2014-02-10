@@ -2,32 +2,17 @@ Template.editor.rendered = function() {
 
 }
 
-Template.editor.episode_name = function() {
-    if (Session.get('episode')) {
-        return Session.get('episode').name;
+Template.editor.helpers({
+    episode_name: function() {
+        return this.episode.name;
+    },
+    show_name: function() {
+        return this.show.name;
+    },
+    episode_number: function() {
+        return this.episode.number;
+    },
+    url: function() {
+        return this.episode.s3;
     }
-}
-
-Template.editor.episode_number = function() {
-    if (Session.get('episode')) {
-        return Session.get('episode').number;
-    }
-}
-
-Template.editor.url = function() {
-    if (Session.get('episode')) {
-        return Session.get('episode').s3;
-    }
-}
-
-Template.editor.show_name = function() {
-    if (Session.get('show')) {
-        return Session.get('show').name;
-    }
-}
-
-Template.player.url = function() {
-    if (Session.get('episode')) {
-        return Session.get('episode').s3;
-    }
-}
+});
