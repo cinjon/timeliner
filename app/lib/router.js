@@ -21,8 +21,6 @@ Router.map(function() {
     });
 
     this.route('editor', {
-        // let's discuss the path below vs /show/:id/episode/:number/edit tomorrow
-        // also audio won't play without a reload if page is cached
         path:'/editor/:show_route/:number',
         waitOn: function() {
             return [
