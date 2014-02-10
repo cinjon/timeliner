@@ -25,3 +25,9 @@ Template.editor.show_name = function() {
         return Session.get('show').name;
     }
 }
+
+Template.player.url = function() {
+    if (Session.get('episode')) {
+        return Session.get('episode').s3;
+    }
+}
