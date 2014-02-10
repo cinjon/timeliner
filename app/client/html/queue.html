@@ -6,12 +6,12 @@
   <hr>
   <div class="row-fluid">
     <div class="span3">
-      {{show_name}}
+      {{name}}
     </div>
     <div class="span7">
       <ul>
       {{#each episodes}}
-        <li><a href="{{pathFor 'editor'}}">{{episode_name}}</a></li>
+        <li><a href="{{pathFor 'editor'}}">{{name}}</a></li>
       {{/each}}
       </ul>
     </div>
