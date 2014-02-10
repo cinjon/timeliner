@@ -2,8 +2,8 @@ Meteor.publish('show_from_route', function(show_route) {
     return Shows.find({show_route:show_route});
 });
 
-Meteor.publish('episode_from_show', function(show_route, episode) {
-    return Episodes.find({show_route:show_route, episode:episode});
+Meteor.publish('episode_from_show', function(show_route, number) {
+    return Episodes.find({show_route:show_route, number:number});
 });
 
 Meteor.publish('unedited_episodes', function() {

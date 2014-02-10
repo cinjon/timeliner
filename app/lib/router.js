@@ -34,21 +34,18 @@ Router.map(function() {
     });
     this.route('editor', {
         path:'/editor/:show_route/:number',
-        layoutTemplate:'base',
-        waitOn: function() {
+        before: function() {
+            var number = parseInt(this.params.number);
             var show_route = this.params.show_route;
-            var episode = this.params.number;
-            return [Meteor.subscribe('show_from_route', show_route), Meteor.subscribe('episode_from_show', show_route, episode)];
+            this.subscribe('show_from_route', show_route).wait();
+            this.subscribe('episode_from_show', show_route, number).wait();
+
+            Session.set('show', Shows.findOne({show_route:show_route}));
+            Session.set('episode', Episodes.findOne({show_route:show_route,
+                                                     number:number}));
         },
-        data: function() {
-            var show = Shows.findOne({_id:this.params.show_route});
-            var episode = Episodes.findOne({show_route:this.params.show_route,
-                                            number:this.params.number});
-            return {show:show, episode:episode};
-        }
     });
     this.route('viewer', {
         path:'/view/',
-        layoutTemplate:'base',
     });
 });
