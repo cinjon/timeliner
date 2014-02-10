@@ -1,32 +1,74 @@
 <template name="editor">
-  <div class="row-fluid" style="margin-left:auto; margin-right:auto; width:90%">
-    <div class="span11">
-      <div class="row-fluid">
-        <div class="span4">
-          <h4>{{episode.name}}</h4>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span10">
+        <hr>
+        <div class="row-fluid">
+          <div style="inline-block;">
+            <h4 class="left">{{episode.name}}</h4>
+            <h4 class="left" style="margin-left:10px; margin-right:10px; text-align:center; font-size:18px">from</h4>
+            <h4 class="left"> {{show.name}} {{episode.number}}</h4>
+          </div>
         </div>
-        <div class="span1">
-          <h4 style="text-align:center; font-size:18px">from</h4>
-        </div>
-        <div class="span7">
-          <h4> {{show.name}} {{episode.number}}</h4>
-        </div>
-      </div>
-      <div class="row-fluid">
-        {{#with episode}}
-          {{> player}}
-        {{/with}}
+        <hr>
       </div>
     </div>
-    <div class="span1">
-      {{> hotkeys}}
+  </div>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span10">
+        <div class="row-fluid">
+          <div class="span2">
+            {{> timer_button}}
+          </div>
+          <div class="span10">
+            {{#with episode}}
+            {{> player}}
+            {{/with}}
+          </div>
+        </div>
+        <div class="row-fluid" style="margin-top:15px; margin-bottom:5px">
+          <div class="span6 offset2">
+            <div class="row-fluid">
+              <div class="span4">
+                {{> editor_timing_input start_timing}}
+              </div>
+              <div class="span4">
+                {{> editor_timing_input end_timing}}
+              </div>
+              <div class="span2 offset2">
+                {{> character_cutoff}}
+              </div>
+            </div>
+          </div>
+          <div class="span4">
+            {{> links_example}}
+          </div>
+        </div>
+        <div class="row-fluid" style="margin-bottom:15px">
+          <div class="span6 offset2">
+            {{> editor_notes}}
+          </div>
+          <div class="span4">
+            {{> editor_links}}
+          </div>
+        </div>
+        <div class="row-fluid">
+          <button class="btn btn-block btn-editor" id="submit_clip">
+            Submit Clip Notes and Links
+          </button>
+        </div>
+      </div>
+      <div class="span2">
+        {{> hotkeys}}
+      </div>
     </div>
   </div>
 </template>
 
 <template name="player">
-  <video id="player" class="video-js vjs-default-skin vjs-big-play-centered"
-    width="500" height="100" >
+  <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="auto" height="100">
     <source src="{{this.s3}}" type='audio/mp3' />
   </video>
 </template>
@@ -35,4 +77,36 @@
   <div id="hotkey_instructions">
     <h5>Hotkeys</h5>
   </div>
+</template>
+
+<template name="timer_button">
+  <button class="btn btn-block btn-editor" id="timer_button" href="#">
+    Start Segment
+  </button>
+</template>
+
+<template name="editor_timing_input">
+  <div class="input-group">
+    <span class="input-group-addon">{{label}}</span>
+    <input class="editor_timing_input form-control" type="text" id="{{id}}" placeholder="00:00:00">
+  </div>
+</template>
+
+<template name="character_cutoff">
+  <div id="character_cutoff">
+    <span style="float:left; color:{{current_notes_color}};">{{current_char_counter}}</span>
+    <span style="float:left">&nbsp;/&nbsp;</span>
+    <span style="float:left">{{max_chars}}</span>
+  </div>
+</template>
+
+<template name="links_example">
+</template>
+
+<template name="editor_notes">
+  <div id="text" class="editor_text" contenteditable="true"></div>
+</template>
+
+<template name="editor_links">
+  <div id="links" class="editor_text" contenteditable="true"></div>
 </template>
