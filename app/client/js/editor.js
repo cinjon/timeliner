@@ -8,7 +8,7 @@ Template.editor.destroyed = function() {
   videojs("#player").dispose();
 }
 
-var max_chars = 300;
+var max_chars = 140;
 var count_text_chars = function(text) {
     if (typeof text == "undefined" || !text) {
         return 0;
