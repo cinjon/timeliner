@@ -10,5 +10,25 @@
 </template>
 
 <template name="editor">
-  <h3>Hi editor</h3>
+  <div class="container-fluid" style="margin-left:auto; margin-right:auto; width:80%">
+    <div class="row-fluid">
+      <div class="span4">
+        <h4>{{episode_name}}</h4>
+      </div>
+      <div class="span1">
+        <h4 style="text-align:center; font-size:18px">from</h4>
+      </div>
+      <div class="span7">
+        <h4> {{show_name}} {{episode_number}}</h4>
+      </div>
+    </div>
+    <div class="row-fluid">
+      {{#with url}}
+      {{> player}}
+      {{/with}}
+    </div>
+  </div>
+</template>
+
+<template name="player">
 </template>
