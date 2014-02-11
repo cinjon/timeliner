@@ -2,15 +2,13 @@ var max_chars = 140;
 
 Template.editor.rendered = function() {
     videojs("#player", {"controls":true, "preload":"auto", "autoplay":false}, function(){});
-
-    $('#timer_button').css("height", $('#player').height());
-    $('.vjs-big-play-button').css("margin-top", "-1.33em");
+    $('.vjs-big-play-button').css("margin-top", "-1.33em"); //to fix the play button, may not actually be consistent
     Session.set('current_char_counter', count_text_chars($('#text')));
     Session.set('clip_in_progress', false);
 }
 
 Template.editor.destroyed = function() {
-  videojs("#player").dispose();
+    videojs("#player").dispose();
 }
 
 Template.editor.helpers({
@@ -27,7 +25,6 @@ Template.editor.helpers({
 
 Template.editor.events({
     'click #submit_clip': function(e, tmpl) {
-        console.log('submitting clip');
         validate_submission(
             function(data) { //success
                 Meteor.call('create_clip', data);
@@ -36,6 +33,11 @@ Template.editor.events({
 
             }
         );
+    },
+    'click #reset_time': function(e, tmpl) {
+        Session.set('clip_in_progress', false);
+        $('#start_time').val('00:00:00');
+        $('#end_time').val('00:00:00');
     }
 });
 
@@ -59,25 +61,53 @@ Template.editor_links.events({
     //on hitting enter to new line, should auto shorten links
 })
 
-Template.timer_button.events({
-    'click #timer_button': function(e, tmpl) {
-        if (Session.get('clip_in_progress')) { //stopping segment
-            $(e.target).html('Start Clip');
+Template.editor_timing_input.events({
+    'click span': function(e, tmpl) {
+        var a = $(tmpl.find('a'));
+        var type = a.html();
+        if (Session.get('clip_in_progress') && type == 'End') {
             record_time('end_time', function() {
                 Session.set('clip_in_progress', false);
             });
-        } else {
-            $(e.target).html('End Clip');
+        } else if (!Session.get('clip_in_progress') && type == 'Start') {
             record_time('start_time', function() {
                 Session.set('clip_in_progress', true);
             });
         }
     }
-})
+});
+
+// Template.timer_button.events({
+//     'click #timer_button': function(e, tmpl) {
+//         if (Session.get('clip_in_progress')) { //stopping segment
+//             $(e.target).html('Start Clip');
+//             record_time('end_time', function() {
+//                 Session.set('clip_in_progress', false);
+//             });
+//         } else {
+//             $(e.target).html('End Clip');
+//             record_time('start_time', function() {
+//                 Session.set('clip_in_progress', true);
+//             });
+//         }
+//     }
+// })
 
 Template.editor_notes.events({
     'keyup #text': function(e, tmpl) {
         Session.set('current_char_counter', count_text_chars($(e.target)));
+    }
+});
+
+Template.editable_clip.helpers({
+    format_time: function(time) {
+        return format_time(time);
+    },
+    author: function() {
+        return this.editor_id; //fix later to get that person's name
+    },
+    link_objs: function() {
+        return Links.find({_id:{$in:this.links}});
     }
 });
 

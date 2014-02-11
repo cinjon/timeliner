@@ -1,38 +1,52 @@
 <template name="editor">
+  <section class="post">
   <div class="row">
     <div class="col-md-10 col-md-offset-2">
-      <div class="row">
-        <hr />
-      </div>
+      <div class="row"><hr /></div>
       <div class="row">
         <div style="">
           <h4 class="left">{{episode.name}}</h4>
           <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
           <h4 class="left"> {{show.name}} {{episode.number}}</h4>
+          <button class="btn btn-primary right" id="submit_episode" href="#">Submit Episode as Completed</button>
         </div>
       </div>
-      <div class="row">
-        <hr />
-      </div>
+      <div class="row"><hr /></div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-2">
-      <div class="row">{{> timer_button}}</div>
-      <div class="row" style="margin-top: 15px;">{{> hotkeys}}</div>
+      <div class="row">{{> hotkeys}}</div>
     </div>
-      <div class="col-md-10">
-        <div class="row">{{#with episode}} {{> player}} {{/with}}</div>
-        <div id="auto_input" class="row"
+    <div class="col-md-10">
+      <div class="row">{{#with episode}} {{> player}} {{/with}}</div>
+      <div id="auto_input" class="row"
              style="margin-top: 15px;">
           <div class="col-md-7">
             <div class="row">
-              <div style="float: left; margin-right: 15px;">{{>editor_timing_input start_timing}}</div>
-              <div style="float: left;">{{>editor_timing_input end_timing}}</div>
-              <div style="float: right;">{{>character_cutoff}}</div>
+              <div style="float:left; margin-right: 15px;">{{>editor_timing_input start_timing}}</div>
+              <div style="float:left;">{{>editor_timing_input end_timing}}</div>
+              <div style="float:right" class="input-group input-group-sm">
+                <span id="reset_time" class="input-group-addon" style="width:auto; cursor:pointer">
+                  <a>Reset Time</a>
+                </span>
+                <input class="form-control" style="width:0px; padding:0px">
+              </div>
             </div>
           </div>
-          <div class="col-md-5">{{>links_example}}</div>
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col-md-7">
+                {{> links_example}}
+              </div>
+              <div class="col-md-5">
+                <span id="reset_all" class="input-group-addon" style="width:auto; cursor:pointer">
+                  <a>Reset All</a>
+                </span>
+                <input class="form-control" style="width:0px; padding:0px">
+              </div>
+            </div>
+          </div>
         </div>
         <div class="row" style="margin-bottom: 15px;">
           <div class="col-md-7">
@@ -41,7 +55,7 @@
             </div>
           </div>
           <div class="col-md-5" style="padding-right:0px">
-              {{>editor_links}}
+            {{>editor_links}}
           </div>
         </div>
         <div class="row">
@@ -50,11 +64,12 @@
         <hr style="" />
       </div>
     </div>
-    {{#with episode}}
-    {{#each completed_clips}}
-    {{> editable_clip}}
-    {{/each}}
-    {{/with}}
+  </section>
+  {{#with episode}}
+  {{#each completed_clips}}
+  {{> editable_clip}}
+  {{/each}}
+  {{/with}}
 </template>
 
 <template name="player">
@@ -69,27 +84,28 @@
   </div>
 </template>
 
-<template name="timer_button">
-  <button class="btn btn-block btn-primary" id="timer_button" href="#">Start Clip</button>
-</template>
-
 <template name="editor_timing_input">
   <div class="input-group input-group-sm">
-    <span class="input-group-addon" style="width:46px">{{label}}</span>
+    <span class="input-group-addon" style="width:55px; cursor:pointer">
+      <a id="{{label}}_timer">{{label}}</a>
+    </span>
     <input class="form-control" type="text" id="{{id}}" style="width:65px" placeholder="00:00:00">
   </div>
 </template>
 
 <template name="character_cutoff">
-  <div id="character_cutoff">
-    <span style="color:{{current_notes_color}}">{{current_char_counter}}</span>
-    <span>&nbsp;/&nbsp;</span>
-    <span>{{max_chars}}</span>
-  </div>
+  <small class="box_title" style="display:inline-block; float:right">
+    <div id="character_cutoff">
+      <span style="color:{{current_notes_color}}">{{current_char_counter}}</span>
+      <span>&nbsp;/&nbsp;</span>
+      <span>{{max_chars}}</span>
+    </div>
+  </small>
 </template>
 
 <template name="editor_notes">
   <small class="box_title"><i>Notes</i></small>
+  {{>character_cutoff}}
   <div id="text" class="editor_text" contenteditable="true"></div>
 </template>
 
@@ -105,7 +121,38 @@
 </template>
 
 <template name="editable_clip">
-  <section class="post">
-    Hi editable clip
+  <section class="post" style="padding-bottom:25px; padding-top:5px">
+    <div class="row" style="padding-bottom:25px">
+      <div style="float:left; margin-right:15px">
+        <em><small class="muted">Start: {{format_time start}}</small></em>
+      </div>
+      <div style="float:left">
+        <em><small class="muted">End: {{format_time end}}</small></em>
+      </div>
+      <div style="float:right">
+        <em><small class="muted">Author: {{author}}</small></em>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="row">
+          <div class="editor_text_post">
+            {{notes}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5" style="padding-right:0px">
+        <div class="editor_text_post">
+          <ul>
+            {{#each link_objs}}
+            <li><a href="{{url}}">{{text}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
   </section>
+</template>
+
+<template name="editable_clip_boxes">
 </template>
