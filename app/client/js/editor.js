@@ -1,11 +1,7 @@
-var player = null;
 var max_chars = 140;
 
 Template.editor.rendered = function() {
     videojs("#player", {"controls":true, "preload":"auto", "autoplay":false}, function(){});
-    videojs("player").ready(function() {
-        player = this;
-    });
 
     $('#timer_button').css("height", $('#player').height());
     $('.vjs-big-play-button').css("margin-top", "-1.33em");
@@ -116,7 +112,7 @@ var _format_time_part = function(time) {
 }
 
 var record_time = function(id, callback) {
-    var seconds = Math.round(player.currentTime() - 10); //10 is the delay before you realized there was a segment
+    var seconds = Math.round(videojs("#player").currentTime() - 10); //10 is the delay before you realized there was a segment
     if (seconds < 0) {
         seconds = 0;
     }
