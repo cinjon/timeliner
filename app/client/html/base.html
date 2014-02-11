@@ -3,6 +3,9 @@
     <aside>
       <div class="about">
         <h4>{{loginButtons}}</h4>
+          {{#if hasEditorPermission}}
+            <a href="{{urlFor 'editor'}}">Editor</a>
+          {{/if}}
       </div>
     </aside>
   </div> <!-- /#secondary -->
@@ -12,7 +15,7 @@
       <header class="header">
         <hgroup class="pull-left">
           <h1 class="site-title">
-            <a rel="home" title="Timelined" href="/">
+            <a rel="home" title="Timelined" href="{{pathFor 'home'}}">
               Timelined
             </a>
           </h1>

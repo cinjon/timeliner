@@ -3,20 +3,14 @@ Router.configure({
 });
 
 Router.map(function() {
-    this.route('home', {
-        path:'/',
-    });
 
-    this.route('queue', {
-        path:'/queue',
-        waitOn: function() {
-            return [
-                Meteor.subscribe('unedited_episodes'),
-                Meteor.subscribe('shows_with_unedited_episodes')
-            ];
-        },
-        data: function() {
-            return Episodes.find({edited:false});
+    this.route('admin', {
+        path:'/admin',
+        before: function() {
+            if(!Roles.userIsInRole(Meteor.user(), ['admin'])) {
+                Log('Redirecting');
+                this.redirect('/');
+            }
         }
     });
 
@@ -35,6 +29,23 @@ Router.map(function() {
                                         number:parseInt(this.params.number)}),
                 show: Shows.findOne({show_route:this.params.show_route}),
             }
+        }
+    });
+
+    this.route('home', {
+        path:'/',
+    });
+
+    this.route('queue', {
+        path:'/queue',
+        waitOn: function() {
+            return [
+                Meteor.subscribe('unedited_episodes'),
+                Meteor.subscribe('shows_with_unedited_episodes')
+            ];
+        },
+        data: function() {
+            return Episodes.find({edited:false});
         }
     });
 
