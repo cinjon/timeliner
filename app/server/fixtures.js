@@ -22,5 +22,16 @@ Meteor.startup(function() {
              created_at:timestamp, updated_at:null, show_id:commonsense_id, edited:false,
              s3:'http://s3timeliner.s3.amazonaws.com/common_sense_with_dan_carlin/cswdcc257.mp3',
              seconds:2538, number:257, show_route:'Common-Sense-With-Dan-Carlin'});
+
+        var fake_first_nextmarket_clip_id = Clips.insert(
+            {start:10, end:110, notes:"I have two rows in two containers, but I can't figure out how to reduce the bottom and top margin/padding to bring the content closer.",
+             episode_id:nextmarket_66_id, editor_id:"Cinjon's Account",
+             previous_clip_id:null, next_clip_id:null, created_at:timestamp, updated_at:timestamp});
+        var fake_second_nextmarket_clip_id = Clips.insert(
+            {start:300, end:603, notes:"The future of layout in CSS, Flexbox is the latest CSS spec designed to solve common layout problems such as vertical centering.",
+             episode_id:nextmarket_66_id, editor_id:"Cinjon's Account",
+             previous_clip_id:fake_first_nextmarket_clip_id, next_clip_id:null,
+             created_at:timestamp, updated_at:timestamp});
+        Clips.update({id:fake_first_nextmarket_clip_id}, {$set:{next_clip_id:fake_second_nextmarket_clip_id}});
     }
 });

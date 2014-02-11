@@ -8,6 +8,7 @@ Template.editor.rendered = function() {
     });
 
     $('#timer_button').css("height", $('#player').height());
+    $('.vjs-big-play-button').css("margin-top", "-1.33em");
     Session.set('current_char_counter', count_text_chars($('#text')));
     Session.set('clip_in_progress', false);
 }
@@ -107,12 +108,11 @@ var format_time = function(seconds) { //handlebars instead?
 }
 
 var _format_time_part = function(time) {
-    ret = '';
     if (time < 10) {
-        ret += "0";
+        return "0" + time.toString();
+    } else {
+        return time.toString();
     }
-    ret += time.toString();
-    return ret;
 }
 
 var record_time = function(id, callback) {
