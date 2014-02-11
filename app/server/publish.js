@@ -18,4 +18,7 @@ Meteor.publish('shows_with_unedited_episodes', function() {
     return Shows.find({_id:{$in:show_ids}});
 });
 
-
+Meteor.publish('clips_from_episode', function(show_route, number) {
+    var episode = Episodes.findOne({show_route:show_route, number:number});
+    return Clips.find({episode_id:episode._id});
+});

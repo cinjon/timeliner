@@ -25,14 +25,15 @@ Router.map(function() {
         waitOn: function() {
             return [
                 Meteor.subscribe('episode_from_show', this.params.show_route, parseInt(this.params.number)),
-                Meteor.subscribe('show_from_route', this.params.show_route)
+                Meteor.subscribe('show_from_route', this.params.show_route),
+                Meteor.subscribe('clips_from_episode', this.params.show_route, parseInt(this.params.number)),
             ];
         },
         data: function() {
             return {
                 episode: Episodes.findOne({show_route:this.params.show_route,
                                         number:parseInt(this.params.number)}),
-                show: Shows.findOne({show_route:this.params.show_route})
+                show: Shows.findOne({show_route:this.params.show_route}),
             }
         }
     });

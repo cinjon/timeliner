@@ -29,13 +29,13 @@
           {{> player}}
           {{/with}}
         </div>
-        <div id="auto_input" class="row-fluid" style="margin-top:15px; margin-bottom:5px">
+        <div id="auto_input" class="row-fluid" style="margin-top:15px;">
           <div class="span7">
             <div class="row-fluid">
               <div style="float:left; margin-right:15px">
                 {{> editor_timing_input start_timing}}
               </div>
-              <div style="float:left; margin-right:15px">
+              <div style="float:left">
                 {{> editor_timing_input end_timing}}
               </div>
               <div style="float:right">
@@ -43,7 +43,7 @@
               </div>
             </div>
           </div>
-          <div class="span5">
+          <div class="span5" style="margin-top:-3px">
             {{> links_example}}
           </div>
         </div>
@@ -60,33 +60,39 @@
             Submit Clip Notes and Links
           </button>
         </div>
+        <hr style="style-two">
       </div>
     </div>
+    {{#with episode}}
+      {{#each completed_clips}}
+        {{> editable_clip}}
+      {{/each}}
+    {{/with}}
   </div>
 </template>
 
 <template name="player">
-  <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="auto" height="60">
+  <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="auto" height="85">
     <source src="{{this.s3}}" type='audio/mp3' />
   </video>
 </template>
 
 <template name="hotkeys">
   <div id="hotkey_instructions">
-    <h5>Hotkeys</h5>
+    <h5 style="margin-left:20px;">Hotkeys</h5>
   </div>
 </template>
 
 <template name="timer_button">
   <button class="btn btn-block btn-editor" id="timer_button" href="#">
-    Start Segment
+    Start Clip
   </button>
 </template>
 
 <template name="editor_timing_input">
   <div class="input-group">
     <span class="input-group-addon">{{label}}</span>
-    <input class="editor_timing_input form-control" type="text" id="{{id}}" placeholder="00:00:00">
+    <input class="editor_timing_input" type="text" id="{{id}}" placeholder="00:00:00" style="margin-bottom:4px">
   </div>
 </template>
 
@@ -98,13 +104,22 @@
   </div>
 </template>
 
-<template name="links_example">
-</template>
-
 <template name="editor_notes">
+  <small class="box_title"><i>Notes</i></small>
   <div id="text" class="editor_text" contenteditable="true"></div>
 </template>
 
 <template name="editor_links">
+  <small class="box_title"><i>Links</i></small>
   <div id="links" class="editor_text" contenteditable="true"></div>
+</template>
+
+<template name="links_example">
+  <p class="link_instruction">Events or People: Insert Wikipedia Link URL</p>
+  <p class="link_instruction">Products: Insert Amazon Link URL</p>
+  <p class="link_instruction">Youtube: Insert Youtube URL</p>
+</template>
+
+<template name="editable_clip">
+  Hi editable clip
 </template>
