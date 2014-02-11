@@ -23,10 +23,13 @@ Router.map(function() {
     this.route('editor', {
         path:'/editor/:show_route/:number',
         waitOn: function() {
+            var number = parseInt(this.params.number);
+            var show_route = this.params.show_route;
             return [
-                Meteor.subscribe('episode_from_show', this.params.show_route, parseInt(this.params.number)),
-                Meteor.subscribe('show_from_route', this.params.show_route),
-                Meteor.subscribe('clips_from_episode', this.params.show_route, parseInt(this.params.number)),
+                Meteor.subscribe('episode_from_show', show_route, number),
+                Meteor.subscribe('show_from_route', show_route),
+                Meteor.subscribe('clips_from_episode', show_route, number),
+                Meteor.subscribe('links_from_episode', show_route, number),
             ];
         },
         data: function() {
