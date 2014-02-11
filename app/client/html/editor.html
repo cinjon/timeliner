@@ -1,31 +1,43 @@
 <template name="editor">
-  <section class="post">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-2">
-      <div class="row"><hr /></div>
-      <div class="row">
-        <div style="">
-          <h4 class="left">{{episode.name}}</h4>
-          <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
-          <h4 class="left"> {{show.name}} {{episode.number}}</h4>
-          <button class="btn btn-primary right" id="submit_episode" href="#">Submit Episode as Completed</button>
+  <section class="post" style="padding-bottom:0px; padding-top:0px">
+    <div class="row" id="messages" style="display:none"></div>
+
+    <div class="row">
+      <div class="col-md-10 col-md-offset-2">
+        <div class="row"><hr /></div>
+        <div class="row">
+          <div style="">
+            <h4 class="left">{{episode.name}}</h4>
+            <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
+            <h4 class="left"> {{show.name}} {{episode.number}}</h4>
+            <button class="btn btn-primary right" id="submit_episode" href="#">Submit Episode as Completed</button>
+          </div>
         </div>
+        <div class="row"><hr /></div>
       </div>
-      <div class="row"><hr /></div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-2">
-      <div class="row">{{> hotkeys}}</div>
-    </div>
-    <div class="col-md-10">
-      <div class="row">{{#with episode}} {{> player}} {{/with}}</div>
-      <div id="auto_input" class="row"
-             style="margin-top: 15px;">
+
+    <div class="row">
+      <div class="col-md-2">
+        <div class="row">{{> hotkeys}}</div>
+      </div>
+
+      <div class="col-md-10">
+        <div class="row">
+          {{#with episode}}
+          {{> player}}
+          {{/with}}
+        </div>
+
+        <div id="auto_input" class="row" style="margin-top: 15px;">
           <div class="col-md-7">
             <div class="row">
-              <div style="float:left; margin-right: 15px;">{{>editor_timing_input start_timing}}</div>
-              <div style="float:left;">{{>editor_timing_input end_timing}}</div>
+              <div style="float:left; margin-right: 15px;">
+                {{>editor_timing_input start_timing}}
+              </div>
+              <div style="float:left;">
+                {{>editor_timing_input end_timing}}
+              </div>
               <div style="float:right" class="input-group input-group-sm">
                 <span id="reset_time" class="input-group-addon" style="width:auto; cursor:pointer">
                   <a>Reset Time</a>
@@ -48,6 +60,7 @@
             </div>
           </div>
         </div>
+
         <div class="row" style="margin-bottom: 15px;">
           <div class="col-md-7">
             <div class="row">
@@ -58,13 +71,16 @@
             {{>editor_links}}
           </div>
         </div>
+
         <div class="row">
           <button class="btn btn-block btn-primary" id="submit_clip">Submit Clip Notes and Links</button>
         </div>
+
         <hr style="" />
       </div>
     </div>
   </section>
+
   {{#with episode}}
   {{#each completed_clips}}
   {{> editable_clip}}
@@ -121,7 +137,7 @@
 </template>
 
 <template name="editable_clip">
-  <section class="post" style="padding-bottom:25px; padding-top:5px">
+  <section class="post" style="padding-bottom:5px; padding-top:5px">
     <div class="row" style="padding-bottom:25px">
       <div style="float:left; margin-right:15px">
         <em><small class="muted">Start: {{format_time start}}</small></em>

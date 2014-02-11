@@ -19,26 +19,51 @@ Template.editor.helpers({
         return {'label':'End', 'id':'end_time'};
     },
     completed_clips: function() {
-        return Clips.find({episode_id:this._id});
+        return Clips.find({episode_id:this._id}, {sort:{start:-1}});
     }
 });
 
 Template.editor.events({
+    'click #submit_episode': function(e, tmpl) {
+        console.log(this.episode.links);
+        if (this.episode.links.length > 0) {
+            Meteor.call('mark_episode_edited', this.episode, function(err, data) {
+                //show giant green checkmark in top right, wait 3 seconds, redirect
+                console.log('giant green checkmark');
+            });
+        } else {
+            //send message saying do your job.
+            console.log('red mean message');
+        }
+    },
     'click #submit_clip': function(e, tmpl) {
         validate_submission(
+            this.episode._id,
             function(data) { //success
-                Meteor.call('create_clip', data);
+                Meteor.call(
+                    'create_clip', data, function(err, data) {
+                        Session.set('clip_in_progress', false);
+                        reset_time();
+                        reset_text();
+                    }
+                );
             },
-            function() { //fail
-
+            function(message) { //fail
+                //TODO: show where it failed as a message
+                $('#messages').html(message);
+                $('#messages').show();
             }
         );
     },
     'click #reset_time': function(e, tmpl) {
         Session.set('clip_in_progress', false);
-        $('#start_time').val('00:00:00');
-        $('#end_time').val('00:00:00');
-    }
+        reset_time();
+    },
+    'click #reset_all': function(e, tmpl) {
+        Session.set('clip_in_progress', false);
+        reset_time();
+        reset_text();
+    },
 });
 
 Template.character_cutoff.helpers({
@@ -152,6 +177,77 @@ var record_time = function(id, callback) {
     }
 }
 
-var validate_submission = function(success_callback, fail_callback) {
-    console.log('validating');
+var has_time = function(time) {
+    if (!time || time == '00:00:00' || !('/^(\d{2})\:(\d{2}):(\d{2})$/'.test(time))) {
+        return false;
     }
+    return true;
+}
+
+var time_to_seconds = function(time) {
+    var parts = time.split(':');
+    return parseInt(parts[0])*3600 + parseInt(parts[1])*60 + parseInt(parts[2]);
+}
+
+var time_in_range = function(time) {
+    return time_to_seconds(time) < $('#player').duration();
+}
+
+var time_in_order = function(start, end) {
+    return time_to_seconds(start) < time_to_seconds(end);
+}
+
+var get_links = function() {
+    var text = $('#links').text();
+    var links = text.split('\n');
+    var ret = [];
+
+    for (var i = 0; i < links.length; i++) {
+        //should have link titles ...
+        ret.push({url:links[i], title:'Title of this link: ' + i});
+    }
+}
+
+var validate_submission = function(episode_id, success_callback, fail_callback) {
+    var data = {};
+    var count_chars = count_text_chars($('#text'));
+    var start = $('#start_time').val()
+    var end = $('#end_time').val()
+
+    if (Session.get('clip_in_progress')) {
+        fail_callback('Clip in Progress');
+    } else if (!has_time(start)) {
+        fail_callback('Please set the start time.')
+    } else if (!has_time(end)) {
+        fail_callback('Please set the end time.');
+    } else if (!time_in_range(start)) {
+        fail_callback('The Start Time is not in the right range');
+    } else if (!time_in_range(end)) {
+        fail_callback('The End Time is not in the right range');
+    } else if (!time_in_order(start, end)) {
+        fail_callback('The start time should be less than the end time');
+    } else if (count_chars > 140) {
+        fail_callback('The notes are too big');
+    } else if (count_chars == 0) {
+        fail_callback('Please write a note');
+    }
+
+    var links = get_links();
+    var timestamp = (new Date()).getTime();
+    clip_data = {start:time_to_seconds(start), end:time_to_seconds(end), notes:$('#text').text(),
+                 episode_id:episode_id, editor_id:Meteor.user()._id, created_at:timestamp,
+                 links:links};
+    data = {clip_data:clip_data, ts:timestamp, episode_id:episode_id};
+    success_callback(data);
+}
+
+var reset_time = function() {
+    $('#start_time').val('00:00:00');
+    $('#end_time').val('00:00:00');
+}
+
+var reset_text = function() {
+    $('#text').text('');
+    Session.set('current_char_counter', 0);
+    $('#links').text('');
+}
