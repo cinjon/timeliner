@@ -9,6 +9,6 @@ preserve-inputs
 iron-router
 accounts-base
 accounts-password
-bootstrap-themes
 less
 accounts-ui-bootstrap-3
+bootstrap-3
