@@ -10,6 +10,6 @@ iron-router
 accounts-base
 accounts-password
 less
-accounts-ui-bootstrap-3
 accounts-twitter
 accounts-facebook
+meteor-accounts-ui-bootstrap-3
