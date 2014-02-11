@@ -11,4 +11,5 @@ accounts-base
 accounts-password
 less
 accounts-ui-bootstrap-3
-bootstrap-3
+accounts-twitter
+accounts-facebook
