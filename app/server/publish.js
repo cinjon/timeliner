@@ -22,3 +22,9 @@ Meteor.publish('clips_from_episode', function(show_route, number) {
     var episode = Episodes.findOne({show_route:show_route, number:number});
     return Clips.find({episode_id:episode._id});
 });
+
+Meteor.publish('links_from_episode', function(show_route, number) {
+    var episode = Episodes.findOne({show_route:show_route, number:number});
+    return Links.find({}, {_id:{$in:episode.links}});
+});
+

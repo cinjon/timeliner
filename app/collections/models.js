@@ -5,14 +5,14 @@
 Shows = new Meteor.Collection('shows');
 
 // Episode - {name:String, home_url:String, show_id:String, show_route:String, number:Number,
-// edited:Boolean, seconds:Number, s3:Url, created_at:Date, updated_at:Date, home_notes:String}
+// edited:Boolean, seconds:Number, s3:Url, created_at:Date, updated_at:Date, home_notes:String, links:[]}
 Episodes = new Meteor.Collection('episodes');
 
 // Clips - {start:Number, end:Number, notes:String, episode_id:String, editor_id:String,
-// previous_clip_id:String, next_clip_id:String, created_at:Date, updated_at:Date}
+// previous_clip_id:String, next_clip_id:String, created_at:Date, updated_at:Date, links:[link_id]}
 Clips = new Meteor.Collection('clips');
 
-// Links - {url:String, clip_id:String, episode_id:String, text:String, created_at:String}
+// Links - {url:String, text:String, created_at:String}
 Links = new Meteor.Collection('links');
 
 // Tags - {name:String}

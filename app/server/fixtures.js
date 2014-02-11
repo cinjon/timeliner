@@ -33,5 +33,19 @@ Meteor.startup(function() {
              previous_clip_id:fake_first_nextmarket_clip_id, next_clip_id:null,
              created_at:timestamp, updated_at:timestamp});
         Clips.update({id:fake_first_nextmarket_clip_id}, {$set:{next_clip_id:fake_second_nextmarket_clip_id}});
+
+        var first_link_id = Links.insert({
+            url:'http://bootply.com/bootstrap-3-migration-guide', text:"What's New in Bootstrap 3",
+            created_at:timestamp})
+        var second_link_id = Links.insert({
+            url:'http://wrapbootstrap.com/preview/WB022B0X6', text:"Von - Minimalist Blog Theme",
+            created_at:timestamp});
+        var third_link_id = Links.insert({
+            url:'http://www.bizjournals.com/denver/stories/2009/04/27/daily24.html?page=all',
+            text:'John Malone Talks', created_at:timestamp});
+
+        Clips.update({_id:fake_first_nextmarket_clip_id}, {$push:{links:{$each:[second_link_id,third_link_id]}}});
+        Clips.update({_id:fake_second_nextmarket_clip_id}, {$push:{links:{$each:[first_link_id,third_link_id]}}});
+        Episodes.update({_id:nextmarket_66_id}, {$push:{links:{$each:[first_link_id, second_link_id, third_link_id]}}});
     }
 });
