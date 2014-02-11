@@ -12,7 +12,7 @@ Episodes = new Meteor.Collection('episodes');
 // previous_clip_id:String, next_clip_id:String, created_at:Date, updated_at:Date, links:[link_id]}
 Clips = new Meteor.Collection('clips');
 
-// Links - {url:String, text:String, created_at:String}
+// Links - {url:String, text:String, created_at:String, shortened_url:String}
 Links = new Meteor.Collection('links');
 
 // Tags - {name:String}
