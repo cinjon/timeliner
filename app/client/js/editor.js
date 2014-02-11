@@ -58,6 +58,10 @@ Template.character_cutoff.helpers({
     }
 });
 
+Template.editor_links.events({
+    //on hitting enter to new line, should auto shorten links
+})
+
 Template.timer_button.events({
     'click #timer_button': function(e, tmpl) {
         if (Session.get('clip_in_progress')) { //stopping segment

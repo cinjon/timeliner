@@ -1,7 +1,7 @@
 #hotkey_instructions {
     height:100px;
     padding: 10px 10px 5px 5px;
-    margin: 0 auto;
+    width:90%;
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0, 0, 0, 0.1);
@@ -46,12 +46,12 @@
   float:left;
 }
 
-.editor_timing_input {
-  width:65px;
+#timer_button {
+  width:90%;
 }
 
 #character_cutoff {
-    padding: 8px;
+    padding: 2px;
     display: inline-block;
     -webkit-border-radius: 6px;
     border-radius: 6px;
@@ -59,7 +59,8 @@
 }
 
 .editor_text {
-    height:60px;
+    overflow: auto;
+    height: 125px;;
     padding: 10px 10px 5px 5px;
     margin: 0 auto;
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2), inset 0 0 5px rgba(0, 0, 0, 0.1);
@@ -73,7 +74,7 @@
 
 .link_instruction {
     margin-bottom:0;
-    line-height:13px;
+    line-height:10px;
     font-size:80%
 }
 

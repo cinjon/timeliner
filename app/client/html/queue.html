@@ -1,14 +1,14 @@
 <template name="queue">
-  <div class="row-fluid">
+  <div class="row">
     <h3>Welcome to the Queue</h3>
   </div>
   {{#each shows}}
   <hr>
-  <div class="row-fluid">
-    <div class="span3">
+  <div class="row">
+    <div class="col-md-4">
       {{name}}
     </div>
-    <div class="span7">
+    <div class="col-md-8">
       <ul>
       {{#each episodes}}
         <li><a href="{{pathFor 'editor'}}">{{name}}</a></li>
