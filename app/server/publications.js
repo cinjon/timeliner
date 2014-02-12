@@ -6,6 +6,10 @@ Meteor.publish('episode_from_show', function(show_route, number) {
     return Episodes.find({show_route:show_route, number:number});
 });
 
+Meteor.publish('episodes_from_show', function(show_route) {
+    return Episodes.find({show_route:show_route});
+});
+
 Meteor.publish('unedited_episodes', function() {
     return Episodes.find({edited:false});
 });
@@ -28,3 +32,19 @@ Meteor.publish('links_from_episode', function(show_route, number) {
     return Links.find({}, {_id:{$in:episode.links}});
 });
 
+Meteor.publish('home_shows', function() {
+    return home_shows();
+});
+
+Meteor.publish('home_shows_episodes', function() {
+    var show_ids = [];
+    home_shows().forEach(function(show) {
+        show_ids.push(show._id);
+    });
+    console.log(show_ids);
+    return Episodes.find({show_id:{$in:show_ids}});
+});
+
+var home_shows = function() {
+    return Shows.find(); //TODO: change to incorporate some selection process, maybe recent
+}

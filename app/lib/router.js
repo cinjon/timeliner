@@ -37,6 +37,13 @@ Router.map(function() {
 
     this.route('home', {
         path:'/',
+        waitOn: function() {
+            console.log('hiting home');
+            return [
+                Meteor.subscribe('home_shows'),
+                Meteor.subscribe('home_shows_episodes')
+            ]
+        },
     });
 
     this.route('queue', {
@@ -59,7 +66,7 @@ Router.map(function() {
             var number = parseInt(this.params.number);
             var start_time = this.params.hash;
             return [
-                Meteor.subscribe('episode_from_show', show_route, number),
+                Meteor.subscribe('episodes_from_show', show_route),
                 Meteor.subscribe('show_from_route', show_route),
                 Meteor.subscribe('clips_from_episode', show_route, number),
                 Meteor.subscribe('links_from_episode', show_route, number)
@@ -74,5 +81,6 @@ Router.map(function() {
                 show: Shows.findOne({show_route:show_route}),
                 start_time: start_time
             }
+        }
     });
 });
