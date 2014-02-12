@@ -1,9 +1,19 @@
 <template name="editor">
   <section class="post" style="padding-bottom:0px; padding-top:0px">
-    <div class="row" id="messages" style="display:none"></div>
+    <div class="row">
+      <div id="messages" class="col-md-10 col-md-offset-2" style="display:{{displayMessageStyle}}">
+        <div class="row">
+          <h3 style="color:#EB1E2C">{{getMessage}}</h3>
+        </div>
+      </div>
+    </div>
 
     <div class="row">
-      <div class="col-md-10 col-md-offset-2">
+      <div class="col-md-2">
+        <img id="checkmark" style="display:none" src="/green_checkmark.png" />
+      </div>
+
+      <div class="col-md-10">
         <div class="row"><hr /></div>
         <div class="row">
           <div style="">
@@ -25,7 +35,9 @@
       <div class="col-md-10">
         <div class="row">
           {{#with episode}}
+          {{#constant}}
           {{> player}}
+          {{/constant}}
           {{/with}}
         </div>
 
@@ -42,20 +54,18 @@
                 <span id="reset_time" class="input-group-addon" style="width:auto; cursor:pointer">
                   <a>Reset Time</a>
                 </span>
-                <input class="form-control" style="width:0px; padding:0px">
               </div>
             </div>
           </div>
           <div class="col-md-5">
             <div class="row">
-              <div class="col-md-7">
+              <div class="col-md-7" style="padding-right:0px">
                 {{> links_example}}
               </div>
-              <div class="col-md-5">
-                <span id="reset_all" class="input-group-addon" style="width:auto; cursor:pointer">
+              <div class="col-md-5" style="padding-right:0px">
+                <span id="reset_all" class="input-group-addon right" style="width:auto; cursor:pointer">
                   <a>Reset All</a>
                 </span>
-                <input class="form-control" style="width:0px; padding:0px">
               </div>
             </div>
           </div>
