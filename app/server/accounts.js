@@ -1,4 +1,4 @@
-Meteor.startup( function() {
+Meteor.startup(function() {
   AccountsEntry.config({
     wrapLinks: true,
     homeRoute: '/',

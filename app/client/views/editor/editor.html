@@ -14,9 +14,7 @@
       </div>
 
       <div class="col-md-10">
-        {{#with episode_and_show}}
-        {{> episode_title}}
-        {{/with}}
+        {{#with episode_and_show}} {{> episode_title}} {{/with}}
       </div>
     </div>
 
@@ -27,11 +25,7 @@
 
       <div class="col-md-10">
         <div class="row">
-          {{#with episode}}
-          {{#constant}}
-          {{> editor_player}}
-          {{/constant}}
-          {{/with}}
+          {{#with episode}} {{#constant}} {{> editor_player}} {{/constant}} {{/with}}
         </div>
 
         <div id="auto_input" class="row" style="margin-top: 15px;">
@@ -84,24 +78,24 @@
     </div>
   </section>
 
-  {{#with episode}}
-  {{#each completed_clips}}
-  {{> editable_clip}}
-  {{/each}}
-  {{/with}}
+  {{#with episode}} {{#each completed_clips}} {{> editable_clip}} {{/each}} {{/with}}
 </template>
 
 <template name="episode_title">
-  <div class="row"><hr /></div>
-  <div class="row" style="max-height:39px">
-      <h4 class="left">{{episode.name}}</h4>
-      <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
-      <h4 class="left">{{show.name}} {{episode.number}}</h4>
-      {{#if editingPermission}}
-      <button style="min-width:119px" class="btn btn-primary right" id="submit_episode" href="#">Submit Episode</button>
-      {{/if}}
+  <div class="row">
+    <hr />
   </div>
-  <div class="row"><hr /></div>
+  <div class="row" style="max-height:39px">
+    <h4 class="left">{{episode.name}}</h4>
+    <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
+    <h4 class="left">{{show.name}} {{episode.number}}</h4>
+    {{#if editingPermission}}
+    <button style="min-width:119px" class="btn btn-primary right" id="submit_episode" href="#">Submit Episode</button>
+    {{/if}}
+  </div>
+  <div class="row">
+    <hr />
+  </div>
 </template>
 
 <template name="hotkeys">
@@ -130,13 +124,15 @@
 </template>
 
 <template name="editor_notes">
-  <small class="box_title"><i>Notes</i></small>
+  <small class="box_title"><i>Notes</i>
+  </small>
   {{>character_cutoff}}
   <div id="text" class="editor_text" contenteditable="true"></div>
 </template>
 
 <template name="editor_links">
-  <small class="box_title"><i>Links, one url per line</i></small>
+  <small class="box_title"><i>Links, one url per line</i>
+  </small>
   <div id="links" class="editor_text" contenteditable="true"></div>
 </template>
 
@@ -150,13 +146,19 @@
   <section class="post" style="padding-bottom:5px; padding-top:5px">
     <div class="row" style="padding-bottom:25px">
       <div style="float:left; margin-right:15px">
-        <em><small class="muted">Start: {{format_time start}}</small></em>
+        <em>
+          <small class="muted">Start: {{format_time start}}</small>
+        </em>
       </div>
       <div style="float:left">
-        <em><small class="muted">End: {{format_time end}}</small></em>
+        <em>
+          <small class="muted">End: {{format_time end}}</small>
+        </em>
       </div>
       <div style="float:right">
-        <em><small class="muted">Author: {{author}}</small></em>
+        <em>
+          <small class="muted">Author: {{author}}</small>
+        </em>
       </div>
     </div>
     <div class="row">
@@ -171,7 +173,8 @@
         <div class="editor_text_post">
           <ul>
             {{#each link_objs}}
-            <li><a href="{{url}}">{{text}}</a></li>
+            <li><a href="{{url}}">{{text}}</a>
+            </li>
             {{/each}}
           </ul>
         </div>
