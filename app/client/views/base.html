@@ -1,15 +1,19 @@
 <template name="base">
   <div id="secondary" class="col-sm-3 sidebar" style="display: none;">
     <aside>
-      <div class="about">
-        <h4>{{loginButtons}}</h4>
-          {{#if hasEditorPermission}}
-            <a href="{{urlFor 'editor'}}">Editor</a>
-          {{/if}}
+      <div class="tags">
+        <h4>Account</h4>
+        <ul>
+          {{accountButtons}}
+        </ul>
+        {{#if user_is_editor}}
+        <a href="{{urlFor 'queue'}}">Editor Queue</a>
+        {{/if}}
       </div>
       {{yield 'secondary'}}
     </aside>
-  </div> <!-- /#secondary -->
+  </div>
+  <!-- /#secondary -->
 
   <div id="primary" class="col-sm-12">
     <div class="content">
@@ -24,15 +28,18 @@
         <div id="togglesidebar" class="btn btn-primary pull-right">
           <i class="fa fa-bars"></i>
         </div>
-      </header> <!-- /header -->
+      </header>
+      <!-- /header -->
       <div class="entry-description">
         {{yield}}
       </div>
       <footer class="footer">
         <p>© Timelined 2014.</p>
-      </footer> <!-- /footer -->
+      </footer>
+      <!-- /footer -->
     </div>
-  </div> <!-- /#primary -->
+  </div>
+  <!-- /#primary -->
 </template>
 
 <template name="notFound">

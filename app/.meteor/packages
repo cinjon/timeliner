@@ -11,7 +11,8 @@ accounts-password
 less
 accounts-twitter
 accounts-facebook
-meteor-accounts-ui-bootstrap-3
 roles
 collection-hooks
 keybindings
+accounts-entry
+accounts-ui

@@ -1,44 +1,42 @@
 Template.editor_player.rendered = function() {
     load_video(0);
 
-    Meteor.Keybindings.add({
-        'shift+space': function() {
-            if ( videojs("#player").paused() ) {
-                videojs("#player").play();
-            } else {
-                videojs("#player").pause();
-            }
-        },
-        'shift+←': function() {
-            time = videojs("#player").currentTime();
-            videojs("#player").currentTime(time - 10);
-        },
-        'shift+alt+←': function() {
-            time = videojs("#player").currentTime();
-            videojs("#player").currentTime(time - 60);
-        },
-        'shift+→': function() {
-            time = videojs("#player").currentTime();
-            videojs("#player").currentTime(time + 10);
-        },
-         'shift+alt+→': function() {
-            time = videojs("#player").currentTime();
-            videojs("#player").currentTime(time + 60);
-        },
-        'shift+↑': function() {
-            time = videojs("#player").currentTime();
-            global_record_time("start_time");
-        },
-        'shift+↓': function() {
-            time = videojs("#player").currentTime();
-            global_record_time("end_time");
-        }
-    });
+  Meteor.Keybindings.add({
+    'shift+space': function() {
+      if (videojs("#player").paused()) {
+        videojs("#player").play();
+      } else {
+        videojs("#player").pause();
+      }
+    },
+    'shift+←': function() {
+      time = videojs("#player").currentTime();
+      videojs("#player").currentTime(time - 10);
+    },
+    'shift+alt+←': function() {
+      time = videojs("#player").currentTime();
+      videojs("#player").currentTime(time - 60);
+    },
+    'shift+→': function() {
+      time = videojs("#player").currentTime();
+      videojs("#player").currentTime(time + 10);
+    },
+    'shift+alt+→': function() {
+      time = videojs("#player").currentTime();
+      videojs("#player").currentTime(time + 60);
+    },
+    'shift+↑': function() {
+      time = videojs("#player").currentTime();
+      global_record_time("start_time");
+    },
+    'shift+↓': function() {
+      time = videojs("#player").currentTime();
+      global_record_time("end_time");
+    }
+  });
 }
 
 Template.view_player.rendered = function() {
-    console.log('in vip')
-    console.log(this.start_time);
     load_video(998);
 }
 
