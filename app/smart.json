@@ -3,6 +3,7 @@
     "iron-router": {},
     "roles": {},
     "collection-hooks": {},
-    "keybindings": {}
+    "keybindings": {},
+    "accounts-entry": {}
   }
 }

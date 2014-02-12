@@ -2,7 +2,7 @@ Template.base.events({
     'click #togglesidebar': function(e, tmpl) {
         var primary = $("#primary");
         var secondary = $("#secondary");
-	if(primary.hasClass("col-sm-9")){
+	if ( primary.hasClass("col-sm-9") ){
 	    primary.removeClass("col-sm-9");
 	    primary.addClass("col-sm-12");
 	    secondary.css('display', 'none');
