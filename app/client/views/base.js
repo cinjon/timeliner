@@ -1,4 +1,4 @@
-Template.base.events({
+Template.base.events ({
   'click #togglesidebar': function(e, tmpl) {
     var primary = $("#primary");
     var secondary = $("#secondary");
@@ -10,6 +10,15 @@ Template.base.events({
       primary.removeClass("col-sm-12");
       primary.addClass("col-sm-9");
       secondary.css('display', 'inline-block');
+    }
+  }
+});
+
+
+Template.base.helpers({
+  user_is_editor: function () {
+    if (Roles.userIsInRole(Meteor.userId(), ['editor'])) {
+      return true;
     }
   }
 });

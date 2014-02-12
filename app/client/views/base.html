@@ -6,8 +6,8 @@
         <ul>
           {{accountButtons}}
         </ul>
-        {{#if hasEditorPermission}}
-        <a href="{{urlFor 'editor'}}">Editor</a>
+        {{#if user_is_editor}}
+        <a href="{{urlFor 'queue'}}">Editor Queue</a>
         {{/if}}
       </div>
     </aside>
