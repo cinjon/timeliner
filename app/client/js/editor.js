@@ -4,11 +4,47 @@ Session.set('message', null);
 Template.editor.rendered = function() {
     videojs("#player", {"controls":true, "preload":"auto", "autoplay":false}, function(){});
     $('.vjs-big-play-button').css("margin-top", "-1.33em"); //to fix the play button, may not actually be consistent
+
     Session.set('current_char_counter', count_text_chars($('#text')));
+
+    Meteor.Keybindings.add({
+        'shift+space': function() {
+            if ( videojs("#player").paused() ) {
+                videojs("#player").play();
+            } else {
+                videojs("#player").pause();
+            }
+        },
+        'shift+←': function(){
+            time = videojs("#player").currentTime();
+            videojs("#player").currentTime(time - 10);
+        },
+        'shift+alt+←': function(){
+            time = videojs("#player").currentTime();
+            videojs("#player").currentTime(time - 60);
+        },
+        'shift+→': function() {
+            time = videojs("#player").currentTime();
+            videojs("#player").currentTime(time + 10);
+        },
+         'shift+alt+→': function() {
+            time = videojs("#player").currentTime();
+            videojs("#player").currentTime(time + 60);
+        },
+        'shift+↑': function(){
+            time = videojs("#player").currentTime();
+            $('#start_time').val(format_time(time));
+        },
+        'shift+↓': function(){
+            time = videojs("#player").currentTime();
+            $('#end_time').val(format_time(time));        }
+    });
 }
 
 Template.editor.destroyed = function() {
     videojs("#player").dispose();
+    Meteor.Keybindings.remove(['shift+space', 'shift+←', 'shift+alt+←',
+        'shift+→', 'shift+alt+→', 'shift+↑', 'shift+↓' ]);
 }
 
 Template.editor.helpers({
