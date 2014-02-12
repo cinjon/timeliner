@@ -5,6 +5,37 @@ Template.editor.rendered = function() {
     Session.set('current_char_counter', count_text_chars($('#text')));
 }
 
+// HELPERS
+
+Template.character_cutoff.helpers({
+    current_char_counter: function() {
+        return Session.get('current_char_counter');
+    },
+    current_notes_color: function() {
+        if (Session.get('current_char_counter') > max_chars) {
+            return '#EB1E2C';
+        } else {
+            return '#000000';
+        }
+    },
+    max_chars: function() {
+        return max_chars;
+    }
+});
+
+
+Template.editable_clip.helpers({
+    format_time: function(time) {
+        return format_time(time);
+    },
+    author: function() {
+        return this.editor_id; //fix later to get that person's name
+    },
+    link_objs: function() {
+        return Links.find({_id:{$in:this.links}});
+    }
+});
+
 Template.editor.helpers({
     start_timing: function() {
         return {'label':'Start', 'id':'start_time'};
@@ -25,6 +56,9 @@ Template.editor.helpers({
         return 'inline-block';
     },
 });
+
+
+// EVENTS
 
 Template.editor.events({
     'click #submit_episode': function(e, tmpl) {
@@ -69,25 +103,15 @@ Template.editor.events({
     },
 });
 
-Template.character_cutoff.helpers({
-    current_char_counter: function() {
-        return Session.get('current_char_counter');
-    },
-    current_notes_color: function() {
-        if (Session.get('current_char_counter') > max_chars) {
-            return '#EB1E2C';
-        } else {
-            return '#000000';
-        }
-    },
-    max_chars: function() {
-        return max_chars;
-    }
-});
-
 Template.editor_links.events({
     //on hitting enter to new line, should auto shorten links
-})
+});
+
+Template.editor_notes.events({
+    'keyup #text': function(e, tmpl) {
+        Session.set('current_char_counter', count_text_chars($(e.target)));
+    }
+});
 
 Template.editor_timing_input.events({
     'click span': function(e, tmpl) {
@@ -101,23 +125,7 @@ Template.editor_timing_input.events({
     }
 });
 
-Template.editor_notes.events({
-    'keyup #text': function(e, tmpl) {
-        Session.set('current_char_counter', count_text_chars($(e.target)));
-    }
-});
-
-Template.editable_clip.helpers({
-    format_time: function(time) {
-        return format_time(time);
-    },
-    author: function() {
-        return this.editor_id; //fix later to get that person's name
-    },
-    link_objs: function() {
-        return Links.find({_id:{$in:this.links}});
-    }
-});
+// FUNCTIONS
 
 var count_text_chars = function(text) {
     if (typeof text == "undefined" || !text) {

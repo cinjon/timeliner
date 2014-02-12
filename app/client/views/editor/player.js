@@ -11,11 +11,11 @@ Template.player.rendered = function() {
                 videojs("#player").pause();
             }
         },
-        'shift+←': function(){
+        'shift+←': function() {
             time = videojs("#player").currentTime();
             videojs("#player").currentTime(time - 10);
         },
-        'shift+alt+←': function(){
+        'shift+alt+←': function() {
             time = videojs("#player").currentTime();
             videojs("#player").currentTime(time - 60);
         },
@@ -27,11 +27,11 @@ Template.player.rendered = function() {
             time = videojs("#player").currentTime();
             videojs("#player").currentTime(time + 60);
         },
-        'shift+↑': function(){
+        'shift+↑': function() {
             time = videojs("#player").currentTime();
             record_time("start_time");
         },
-        'shift+↓': function(){
+        'shift+↓': function() {
             time = videojs("#player").currentTime();
             record_time("end_time");
         }

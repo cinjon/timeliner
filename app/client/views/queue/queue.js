@@ -1,3 +1,5 @@
+// HELPERS
+
 Template.queue.helpers({
     shows: function() {
         var show_ids = [];
