@@ -29,11 +29,11 @@ Template.player.rendered = function() {
         },
         'shift+↑': function() {
             time = videojs("#player").currentTime();
-            record_time("start_time");
+            global_record_time("start_time");
         },
         'shift+↓': function() {
             time = videojs("#player").currentTime();
-            record_time("end_time");
+            global_record_time("end_time");
         }
     });
 }

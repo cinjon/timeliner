@@ -3,7 +3,6 @@ Router.configure({
 });
 
 Router.map(function() {
-
     this.route('admin', {
         path:'/admin',
         before: function() {
@@ -17,8 +16,8 @@ Router.map(function() {
     this.route('editor', {
         path:'/editor/:show_route/:number',
         waitOn: function() {
-            var number = parseInt(this.params.number);
             var show_route = this.params.show_route;
+            var number = parseInt(this.params.number);
             return [
                 Meteor.subscribe('episode_from_show', show_route, number),
                 Meteor.subscribe('show_from_route', show_route),
@@ -27,10 +26,11 @@ Router.map(function() {
             ];
         },
         data: function() {
+            var show_route = this.params.show_route;
+            var number = parseInt(this.params.number);
             return {
-                episode: Episodes.findOne({show_route:this.params.show_route,
-                                        number:parseInt(this.params.number)}),
-                show: Shows.findOne({show_route:this.params.show_route}),
+                episode: Episodes.findOne({show_route:show_route, number:number}),
+                show: Shows.findOne({show_route:show_route})
             }
         }
     });
@@ -53,6 +53,26 @@ Router.map(function() {
     });
 
     this.route('viewer', {
-        path:'/view/',
+        path:'/viewer/:show_route/:number',
+        waitOn: function() {
+            var show_route = this.params.show_route;
+            var number = parseInt(this.params.number);
+            var start_time = this.params.hash;
+            return [
+                Meteor.subscribe('episode_from_show', show_route, number),
+                Meteor.subscribe('show_from_route', show_route),
+                Meteor.subscribe('clips_from_episode', show_route, number),
+                Meteor.subscribe('links_from_episode', show_route, number)
+            ]
+        },
+        data: function() {
+            var show_route = this.params.show_route;
+            var number = parseInt(this.params.number);
+            var start_time = global_convert_time_to_seconds(this.params.hash); //e.g. 1h33m12s
+            return {
+                episode: Episodes.findOne({show_route:show_route, number:number}),
+                show: Shows.findOne({show_route:show_route}),
+                start_time: start_time
+            }
     });
 });

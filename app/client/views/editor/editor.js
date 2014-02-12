@@ -118,9 +118,9 @@ Template.editor_timing_input.events({
         var a = $(tmpl.find('a'));
         var type = a.html();
         if (type == 'End') {
-            record_time('end_time');
+            global_record_time('end_time');
         } else if (type == 'Start') {
-            record_time('start_time');
+            global_record_time('start_time');
         }
     }
 });
@@ -133,42 +133,6 @@ var count_text_chars = function(text) {
     }
     return text.text().length;
 };
-
-var format_time = function(seconds) { //handlebars instead?
-    //assumes seconds >= 0
-    var hours   = Math.floor(seconds / 3600);
-    var minutes = Math.floor((seconds - (hours * 3600)) / 60);
-    var secs = seconds - (hours * 3600) - (minutes * 60);
-
-    var ret = "";
-    ret += _format_time_part(hours);
-    ret += ":";
-    ret += _format_time_part(minutes);
-    ret += ":";
-    ret += _format_time_part(secs);
-    return ret;
-}
-
-var _format_time_part = function(time) {
-    if (time < 10) {
-        return "0" + time.toString();
-    } else {
-        return time.toString();
-    }
-}
-
-
-// SHITTY GLOBAL HACK
-record_time = function(id, callback) {
-    var seconds = Math.round(videojs("#player").currentTime());
-    if (seconds < 0) {
-        seconds = 0;
-    }
-    $('#' + id).val(format_time(seconds));
-    if (callback) {
-        callback();
-    }
-}
 
 var has_time = function(time) {
     console.log(time);
