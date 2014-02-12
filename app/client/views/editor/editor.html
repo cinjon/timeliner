@@ -14,16 +14,9 @@
       </div>
 
       <div class="col-md-10">
-        <div class="row"><hr /></div>
-        <div class="row">
-          <div style="">
-            <h4 class="left">{{episode.name}}</h4>
-            <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
-            <h4 class="left"> {{show.name}} {{episode.number}}</h4>
-            <button class="btn btn-primary right" id="submit_episode" href="#">Submit Episode as Completed</button>
-          </div>
-        </div>
-        <div class="row"><hr /></div>
+        {{#with episode_and_show}}
+        {{> episode_title}}
+        {{/with}}
       </div>
     </div>
 
@@ -36,7 +29,7 @@
         <div class="row">
           {{#with episode}}
           {{#constant}}
-          {{> player}}
+          {{> editor_player}}
           {{/constant}}
           {{/with}}
         </div>
@@ -98,10 +91,17 @@
   {{/with}}
 </template>
 
-<template name="player">
-  <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="auto" height="85">
-    <source src="{{this.s3}}" type="audio/mp3"></source>
-  </video>
+<template name="episode_title">
+  <div class="row"><hr /></div>
+  <div class="row" style="max-height:39px">
+      <h4 class="left">{{episode.name}}</h4>
+      <h4 class="left" style="margin-left: 10px; margin-right: 10px; text-align: center; font-size: 18px;">from</h4>
+      <h4 class="left">{{show.name}} {{episode.number}}</h4>
+      {{#if editingPermission}}
+      <button style="min-width:119px" class="btn btn-primary right" id="submit_episode" href="#">Submit Episode</button>
+      {{/if}}
+  </div>
+  <div class="row"><hr /></div>
 </template>
 
 <template name="hotkeys">
@@ -178,7 +178,4 @@
       </div>
     </div>
   </section>
-</template>
-
-<template name="editable_clip_boxes">
 </template>

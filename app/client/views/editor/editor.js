@@ -1,8 +1,15 @@
 var max_chars = 140;
-Session.set('message', null);
 
 Template.editor.rendered = function() {
     Session.set('current_char_counter', count_text_chars($('#text')));
+    Session.set('isEditing', true);;
+    Session.set('message', null);
+}
+
+Template.editor.destroyed = function() {
+    Session.set('current_char_counter', null);
+    Session.set('isEditing', false);
+    Session.set('message', null);
 }
 
 // HELPERS
@@ -26,7 +33,7 @@ Template.character_cutoff.helpers({
 
 Template.editable_clip.helpers({
     format_time: function(time) {
-        return format_time(time);
+        return global_format_time(time);
     },
     author: function() {
         return this.editor_id; //fix later to get that person's name
@@ -55,8 +62,19 @@ Template.editor.helpers({
         }
         return 'inline-block';
     },
+    episode_and_show: function() {
+        return {
+            episode:this.episode,
+            show:this.show
+        }
+    }
 });
 
+Template.episode_title.helpers({
+    editingPermission: function(e, tmpl) {
+        return Session.get('isEditing') && Meteor.userId() && Roles.userIsInRole(Meteor.userId(), ['admin', 'editor']);
+    }
+});
 
 // EVENTS
 
