@@ -6,10 +6,10 @@ Router.map(function() {
   this.route('admin', {
     path: '/admin',
     before: function() {
-      if (!Roles.userIsInRole(Meteor.user(), ['admin'])) {
-        Log('Redirecting');
-        this.redirect('/');
-      }
+      // if (!Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+      //   Log('Redirecting');
+      //   this.redirect('/');
+      // }
     }
   });
 
