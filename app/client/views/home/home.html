@@ -1,0 +1,29 @@
+<template name="home">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row">
+        <section class="post">
+          {{#each shows}}
+          <div class="row">
+            {{name}}
+            <ul>
+              {{#each edited_episodes}}
+              <li><a href="{{pathFor 'viewer'}}">edited: {{name}}</a></li>
+              {{/each}}
+              {{#each unedited_episodes}}
+              <li><a href="{{pathFor 'viewer'}}">{{name}}</a></li>
+              {{/each}}
+            </ul>
+          </div>
+          <hr>
+          {{/each}}
+        </section>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="row">
+        Main Section
+      </div>
+    </div>
+  </div>
+</template>

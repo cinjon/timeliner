@@ -12,6 +12,10 @@ Template.editor.destroyed = function() {
     Session.set('message', null);
 }
 
+Template.episode_title.rendered = function() {
+    global_resize_font_to_fit('.resizeMe', $('#title_div').width());
+}
+
 // HELPERS
 
 Template.character_cutoff.helpers({
@@ -30,13 +34,16 @@ Template.character_cutoff.helpers({
     }
 });
 
-
 Template.editable_clip.helpers({
     format_time: function(time) {
         return global_format_time(time);
     },
     author: function() {
-        return this.editor_id; //fix later to get that person's name
+        //TODO: implement username for editors
+        var user = Meteor.users.findOne({_id:this.editor_id});
+        if (user && user.emails && user.emails[0]) {
+            return user.emails[0].address;
+        }
     },
     link_objs: function() {
         return Links.find({_id:{$in:this.links}});

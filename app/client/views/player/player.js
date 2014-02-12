@@ -1,6 +1,5 @@
 Template.editor_player.rendered = function() {
-    videojs("#player", {"controls":true, "preload":"auto", "autoplay":false}, function(){});
-    $('.vjs-big-play-button').css("margin-top", "-1.33em"); //to fix the play button, may not actually be consistent
+    load_video(0);
 
     Meteor.Keybindings.add({
         'shift+space': function() {
@@ -38,16 +37,34 @@ Template.editor_player.rendered = function() {
 }
 
 Template.view_player.rendered = function() {
-    videojs("#player", {"controls":true, "preload":"auto", "autoplay":false}, function(){});
-    $('.vjs-big-play-button').css("margin-top", "-1.33em"); //to fix the play button, may not actually be consistent
+    console.log('in vip')
+    console.log(this.start_time);
+    load_video(998);
 }
 
 Template.editor_player.destroyed = function() {
-    videojs("#player").dispose();
+    dispose_video();
     Meteor.Keybindings.remove(['shift+space', 'shift+←', 'shift+alt+←',
         'shift+→', 'shift+alt+→', 'shift+↑', 'shift+↓' ]);
 }
 
 Template.view_player.destroyed = function() {
+    dispose_video();
+}
+
+var load_video = function(seconds) {
+    console.log('load_video')
+    console.log(seconds);
+    videojs(
+        "#player", {"controls":true, "preload":"auto", "autoplay":false},
+        function() {
+            $('.vjs-big-play-button').css("margin-top", "-1.33em"); //to fix the play button, may not actually be consistent
+            $('.vjs-fullscreen-control').css("visibility", "hidden");
+            this.currentTime(seconds);
+        }
+    );
+}
+
+var dispose_video = function() {
     videojs("#player").dispose();
 }

@@ -1,0 +1,70 @@
+<template name="viewer">
+  <section class="post" style="padding-top:1em; padding-bottom:1em">
+    {{> episode_title}}
+  </section>
+
+  {{#with episode_and_time}}
+  {{#constant}}
+  {{> view_player}}
+  {{/constant}}
+  {{/with}}
+
+  {{#with episode}}
+  {{#each completed_clips}}
+  {{> episode_clip}}
+  {{/each}}
+  {{/with}}
+</template>
+
+<template name="secondary_viewer">
+  <div class="row">
+    {{#if has_episodes}}
+    <section class="post" style="margin-top:0px">
+      {{#each more_episodes}}
+      <div class="row">
+        {{> episode_link}}
+      </div>
+      {{/each}}
+    </section>
+    {{/if}}
+  </div>
+</template>
+
+<template name="episode_link">
+  <span><a href="{{pathFor 'viewer'}}">{{name}}</a></span>
+</template>
+
+<template name="episode_clip">
+  <section class="post" style="padding-bottom:5px; padding-top:5px">
+    <div class="row" style="padding-bottom:5px">
+      <div style="float:right">
+        <em><small class="muted">Author: {{author}}</small></em>
+      </div>
+      <div class="right" style="margin-right:15px">
+        <em><small class="muted">End: {{format_time end}}</small></em>
+      </div>
+      <div class="right" style="margin-right:15px">
+        <em><small class="muted">Start: {{format_time start}}</small></em>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="row">
+          <div class="editor_text_post">
+            {{notes}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5" style="padding-right:0px">
+        <div class="editor_text_post">
+          <ul>
+            {{#each link_objs}}
+            <li><a href="{{url}}">{{text}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
