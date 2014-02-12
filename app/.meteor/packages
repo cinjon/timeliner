@@ -13,3 +13,5 @@ accounts-twitter
 accounts-facebook
 meteor-accounts-ui-bootstrap-3
 roles
+collection-hooks
+keybindings
