@@ -54,3 +54,9 @@ global_convert_time_to_seconds = function(time) {
 
     return times[0]*3600 + times[1]*60 + times[2];
 }
+
+global_resize_font_to_fit = function(id, width) {
+    //TODO: implement.
+    //needs to change the font on each of the elements in id s.t. they together are still < width
+    var elements = $(id);
+}
