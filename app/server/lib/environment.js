@@ -1,7 +1,2 @@
-Meteor.startup( function() {
-  AccountsEntry.config({
-    wrapLinks: true,
-    homeRoute: '/',
-    dashboardRoute: '/'
-  });
-});
+Houston.add_collection(Meteor.users);
+Houston.add_collection(Meteor.roles);

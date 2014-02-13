@@ -18,3 +18,5 @@ accounts-entry
 accounts-ui
 winston
 winston-papertrail
+houston
+coffeescript

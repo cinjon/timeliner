@@ -6,6 +6,7 @@
     "keybindings": {},
     "accounts-entry": {},
     "winston": {},
-    "winston-papertrail": {}
+    "winston-papertrail": {},
+    "houston": {}
   }
 }
