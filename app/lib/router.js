@@ -69,6 +69,9 @@ Router.map(function() {
 
   this.route('viewer', {
     path: '/viewer/:show_route/:number',
+    yieldTemplate: {
+      'view_secondary': {to: 'secondary'}
+    },
     waitOn: function() {
       var show_route = this.params.show_route;
       var number = parseInt(this.params.number);
@@ -77,7 +80,7 @@ Router.map(function() {
         Meteor.subscribe('episodes_from_show', show_route),
         Meteor.subscribe('show_from_route', show_route),
         Meteor.subscribe('clips_from_episode', show_route, number),
-        Meteor.subscribe('links_from_episode', show_route, number)
+        Meteor.subscribe('links_from_episode', show_route, number),
         Meteor.subscribe('editors', show_route, number)
       ]
     },
