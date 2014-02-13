@@ -4,6 +4,9 @@
     "roles": {},
     "collection-hooks": {},
     "keybindings": {},
-    "accounts-entry": {}
+    "accounts-entry": {},
+    "winston": {},
+    "winston-papertrail": {},
+    "houston": {}
   }
 }
