@@ -10,7 +10,6 @@ accounts-base
 accounts-password
 less
 accounts-twitter
-accounts-facebook
 roles
 collection-hooks
 keybindings
