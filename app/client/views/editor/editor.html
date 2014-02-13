@@ -8,81 +8,78 @@
       </div>
     </div>
 
+    <div class="row"><hr /></div>
     <div class="row">
-      <div class="col-md-2">
-        <img id="checkmark" style="display:none" src="/green_checkmark.png" />
-      </div>
-
       <div class="col-md-10">
         {{#with episode_and_show}} {{> episode_title}} {{/with}}
       </div>
+
+      {{#if isCompleted}}
+      <div class="col-md-2">
+        <img id="checkmark" src="/green_checkmark.png" />
+      </div>
+      {{else}}
+      <div class="col-md-2" style="padding-right:0px;">
+        {{> editor_reset_button reset_all}}
+      </div>
+      {{/if}}
+
+    </div>
+    <div class="row"><hr /></div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+          {{#with episode}}
+          {{#constant}}
+          {{> editor_player}}
+          {{/constant}}
+          {{/with}}
+        </div>
+      </div>
+
+      <div class="col-md-2" style="position:relative" id="editor_timing_parent">
+        {{> editor_timing_input start_timing}}
+        {{> editor_timing_input end_timing}}
+      </div>
+
+      <div class="col-md-6" style="padding-right:0px">
+        <div class="col-md-9" style="position:relative; padding-right:0px" id="editor_link_parent">
+          {{> editor_link_input link_url}}
+          {{> editor_link_input link_text}}
+        </div>
+        <div class="col-md-3" style="position:relative; padding-right:0px;" id="add_link_parent">
+          {{> editor_reset_button reset_time}}
+          <button class="btn btn-default btn-sm" id="add_link" style="position:absolute; bottom:0px; right:0px; width:79px">Add Link</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px; margin-bottom:15px">
+      <div class="col-md-8">
+        <div class="row">
+          {{>editor_notes}}
+        </div>
+      </div>
+      <div class="col-md-4" style="padding-right:0px">
+        {{> editor_links}}
+      </div>
     </div>
 
     <div class="row">
-      <div class="col-md-2">
-        <div class="row">{{> hotkeys}}</div>
-      </div>
-
-      <div class="col-md-10">
-        <div class="row">
-          {{#with episode}} {{#constant}} {{> editor_player}} {{/constant}} {{/with}}
-        </div>
-
-        <div id="auto_input" class="row" style="margin-top: 15px;">
-          <div class="col-md-7">
-            <div class="row">
-              <div style="float:left; margin-right: 15px;">
-                {{>editor_timing_input start_timing}}
-              </div>
-              <div style="float:left;">
-                {{>editor_timing_input end_timing}}
-              </div>
-              <div style="float:right" class="input-group input-group-sm">
-                <span id="reset_time" class="input-group-addon" style="width:auto; cursor:pointer">
-                  <a>Reset Time</a>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-5">
-            <div class="row">
-              <div class="col-md-7" style="padding-right:0px">
-                {{> links_example}}
-              </div>
-              <div class="col-md-5" style="padding-right:0px">
-                <span id="reset_all" class="input-group-addon right" style="width:auto; cursor:pointer">
-                  <a>Reset All</a>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row" style="margin-bottom: 15px;">
-          <div class="col-md-7">
-            <div class="row">
-              {{>editor_notes}}
-            </div>
-          </div>
-          <div class="col-md-5" style="padding-right:0px">
-            {{>editor_links}}
-          </div>
-        </div>
-
-        <div class="row">
-          <button class="btn btn-block btn-primary" id="submit_clip">Submit Clip Notes and Links</button>
-        </div>
-
-        <hr style="" />
-      </div>
+      <button class="btn btn-block btn-primary" id="submit_clip">Submit Clip Notes and Links</button>
     </div>
+    <hr style="" />
   </section>
 
-  {{#with episode}} {{#each completed_clips}} {{> editable_clip}} {{/each}} {{/with}}
+  {{#with episode}}
+  {{#each completed_clips}}
+  {{> editable_clip}}
+  {{/each}}
+  {{/with}}
 </template>
 
 <template name="episode_title">
-  <div class="row"><hr /></div>
   <div class="row" style="max-height:39px;">
     {{#if editingPermission}}
     <div class="col-md-9" style="padding-left:0px" id="title_div">
@@ -95,7 +92,7 @@
     {{#if editingPermission}}
     </div>
     <div class="col-md-3" style="padding-right:0px">
-      <button style="min-width:119px" class="btn btn-primary right" id="submit_episode" href="#">Submit Episode</button>
+      <button style="min-width:119px;" class="btn btn-primary right" id="submit_episode" href="#">Submit Episode</button>
     </div>
     {{/if}}
   </div>
@@ -108,11 +105,19 @@
 </template>
 
 <template name="editor_timing_input">
-  <div class="input-group input-group-sm">
-    <span class="input-group-addon" style="width:55px; cursor:pointer">
+  <div class="input-group input-group-sm" style="position:absolute; margin-left:10px">
+    <span class="input-group-addon" style="min-width:46px; cursor:pointer">
       <a id="{{label}}_timer">{{label}}</a>
     </span>
     <input class="form-control" type="text" id="{{id}}" style="width:65px" placeholder="00:00:00">
+  </div>
+</template>
+
+<template name="editor_reset_button">
+  <div class="input-group input-group-sm" style="float:right">
+    <span id="{{id}}" class="input-group-addon reset_button" style="border:1px solid #ccc;">
+      <a>{{label}}</a>
+    </span>
   </div>
 </template>
 
@@ -133,10 +138,28 @@
   <div id="text" class="editor_text" contenteditable="true"></div>
 </template>
 
+<template name="editor_link_input">
+  <div class="input-group input-group-sm" style="position:absolute; width:100%">
+    <span class="input-group-addon"></span>
+    <input class="form-control" type="text" id="{{id}}" placeholder="{{label}}"/>
+  </div>
+</template>
+
+
 <template name="editor_links">
-  <small class="box_title"><i>Links, one url per line</i>
-  </small>
-  <div id="links" class="editor_text" contenteditable="true"></div>
+  <small class="box_title"><i>Links</i></small>
+  <div style="overflow-x:hidden; overflow-y:scroll; max-height:95px">
+    {{#each current_clip_links}}
+    <div class="row">
+      {{> clip_link}}
+    </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="clip_link">
+  <a class="btn-small remove_link" href="#" url=""><i class="glyphicon glyphicon-remove"></i></a>
+  <a href="{{url}}"><span>{{text}}</span></a>
 </template>
 
 <template name="links_example">

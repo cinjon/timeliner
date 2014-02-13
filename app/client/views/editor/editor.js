@@ -1,9 +1,28 @@
 var max_chars = 140;
 
+Session.set('current_clip_links', [{url:'www.google.com', text:'Google'}]);
+
 Template.editor.rendered = function() {
   Session.set('current_char_counter', count_text_chars($('#text')));
   Session.set('isEditing', true);;
   Session.set('message', null);
+  Session.set('isCompleted', false);
+
+  var height = $('#player').height();
+  $('#editor_timing_parent').css("height", height);
+  $('#editor_link_parent').css("height", height);
+  $('#add_link_parent').css("height", height);
+  $('#end_time').closest('div').css("bottom", 0);
+  $('#link_text').closest('div').css("bottom", 0);
+
+  var link_url = $('#link_url');
+  var submit_episode = $('#submit_episode');
+  var title_div = $('#title_div');
+  var offset_left = link_url.offset().left + link_url.outerWidth() - submit_episode.outerWidth();
+  submit_episode.offset({left:offset_left});
+
+//   var new_width = offset_left - submit_episode.offset().left + title_div.width();
+//   title_div.outerWidth(new_width);
 }
 
 Template.editor.destroyed = function() {
@@ -63,6 +82,18 @@ Template.editor.helpers({
       'id': 'end_time'
     };
   },
+  reset_time: function() {
+    return {
+      'label': 'Reset Time',
+      'id': 'reset_time'
+    }
+  },
+  reset_all: function() {
+    return {
+      'label': 'Reset All',
+      'id': 'reset_all'
+    }
+  },
   completed_clips: function() {
     return Clips.find({
       episode_id: this._id
@@ -86,12 +117,24 @@ Template.editor.helpers({
       episode: this.episode,
       show: this.show
     }
-  }
+  },
+  link_url: function() {
+    return {
+      'id': 'link_url',
+      'label': 'Link URL Here'
+    }
+  },
+  link_text: function() {
+    return {
+      'id': 'link_text',
+      'label': 'Link Title Here'
+    }
+  },
 });
 
 Template.episode_title.helpers({
   editingPermission: function(e, tmpl) {
-    return Session.get('isEditing') && Meteor.userId() && Roles.userIsInRole(Meteor.userId(), ['admin', 'editor']);
+    return Session.get('isEditing') && global_has_role(['admin', 'editor'])
   }
 });
 
@@ -105,7 +148,7 @@ Template.editor.events({
         if (err) {
           Session.set('message', err);
         } else {
-          $('#checkmark').show();
+          Session.set('isCompleted', true);
           setTimeout(function() {
             Router.go('/queue')
           }, 3000);
@@ -132,6 +175,34 @@ Template.editor.events({
       }
     );
   },
+  'click #add_link': function(e, tmpl) {
+    var url = $('#link_url').val();
+    var text = $('#link_text').val();
+    if (!url || url == '') {
+      Session.set('message', 'Please enter a url first');
+    } else if (!text || text == '') {
+      Session.set('message', 'Please enter a title first');
+    } else {
+      var clip_links = Session.get('current_clip_links');
+      clip_links.push({url:url, text:text});
+      Session.set('current_clip_links', clip_links);
+    }
+  }
+});
+
+Template.editor_links.helpers({
+  current_clip_links: function() {
+    return Session.get('current_clip_links');
+  }
+});
+
+Template.editor_notes.events({
+  'keyup #text': function(e, tmpl) {
+    Session.set('current_char_counter', count_text_chars($(e.target)));
+  }
+});
+
+Template.editor_reset_button.events({
   'click #reset_time': function(e, tmpl) {
     reset_time();
   },
@@ -140,16 +211,6 @@ Template.editor.events({
     reset_text();
     reset_message();
   },
-});
-
-Template.editor_links.events({
-  //on hitting enter to new line, should auto shorten links
-});
-
-Template.editor_notes.events({
-  'keyup #text': function(e, tmpl) {
-    Session.set('current_char_counter', count_text_chars($(e.target)));
-  }
 });
 
 Template.editor_timing_input.events({
@@ -163,6 +224,7 @@ Template.editor_timing_input.events({
     }
   }
 });
+
 
 // FUNCTIONS
 
@@ -192,21 +254,6 @@ var time_in_range = function(time) {
 
 var time_in_order = function(start, end) {
   return time_to_seconds(start) < time_to_seconds(end);
-}
-
-var get_links = function() {
-  var text = $('#links').text();
-  var links = text.split("\n");
-  var ret = [];
-
-  for (var i = 0; i < links.length; i++) {
-    //should have link titles ...
-    ret.push({
-      url: links[i],
-      text: 'Title of this link: ' + i
-    });
-  }
-  return ret;
 }
 
 var validate_submission = function(episode_id, success_callback, fail_callback) {
@@ -239,7 +286,7 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
         episode_id: episode_id,
         editor_id: Meteor.user()._id,
         created_at: timestamp,
-        links: get_links()
+        links: Session.get('current_clip_links')
       },
       ts: timestamp,
       episode_id: episode_id
