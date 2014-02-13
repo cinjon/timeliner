@@ -32,10 +32,12 @@ Template.queue.helpers({
 });
 
 Template.queue.events({
-  'click #claim_episode': function(e, tmpl) {
+  'click .claim_episode': function(e, tmpl) {
+    console.log('claiming episode ' + this.name);
     Meteor.call('claim_episode', this._id, Meteor.userId());
   },
-  'click #unclaim_episode': function(e, tmpl) {
+  'click .unclaim_episode': function(e, tmpl) {
+    console.log('unclaiming episode ' + this.name);
     Meteor.call('unclaim_episode', this._id, Meteor.userId());
   },
 });
