@@ -10,14 +10,35 @@
         {{name}}
       </div>
       <div class="col-md-8">
-        <ul>
+        <div class="row">
           {{#each episodes}}
-          <li><a href="{{pathFor 'editor'}}">{{name}}</a>
-          </li>
+          <div class="col-md-10">
+            <div class="row">
+              <a href="{{pathFor 'editor'}}">{{name}}</a>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="row">
+
+              {{#if is_unclaimed}}
+              <button class="btn btn-primary btn-xs right" id="claim_episode" href="#">Claim Episode</button>
+              {{/if}}
+
+              {{#if is_claimed}}
+              <button class="btn btn-primary btn-xs right">Episode Claimed</button>
+              {{/if}}
+
+              {{#if is_claimer}}
+              <button class="btn btn-primary btn-xs right" id="unclaim_episode">Unclaim Episode</button>
+              {{/if}}
+
+            </div>
+          </div>
           {{/each}}
         </ul>
       </div>
     </div>
     {{/each}}
+    <hr>
   </section>
 </template>

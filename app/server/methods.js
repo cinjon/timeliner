@@ -50,15 +50,33 @@ Meteor.methods({
       console.log('hey yo, bad clip push');
     }
   },
-  mark_episode_edited: function(episode) {
+  mark_episode_edited: function(episode_id) {
     var timestamp = (new Date()).getTime();
     Episodes.update({
-      _id: episode._id
+      _id: episode_id
     }, {
       $set: {
         updated_at: timestamp,
         edited: true
       }
     });
-  }
+  },
+  claim_episode: function(episode_id, user_id) {
+    Episodes.update({
+      _id: episode_id
+    }, {
+      $set: {
+        claimer_id: user_id
+      }
+    });
+  },
+  unclaim_episode: function(episode_id, user_id) {
+    Episodes.update({
+      _id: episode_id, claimer_id: user_id
+    }, {
+      $set: {
+        claimer_id: null
+      }
+    });
+  },
 });

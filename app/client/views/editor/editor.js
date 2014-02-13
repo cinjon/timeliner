@@ -1,12 +1,12 @@
 var max_chars = 140;
 
+//TODO: Change this before giving to editors.
 Session.set('current_clip_links', [{url:'www.google.com', text:'Google'}]);
 
 Template.editor.rendered = function() {
   Session.set('current_char_counter', count_text_chars($('#text')));
-  Session.set('isEditing', true);;
   Session.set('message', null);
-  Session.set('isCompleted', false);
+  Session.set('is_completed', false);
 
   var height = $('#player').height();
   $('#editor_timing_parent').css("height", height);
@@ -15,11 +15,11 @@ Template.editor.rendered = function() {
   $('#end_time').closest('div').css("bottom", 0);
   $('#link_text').closest('div').css("bottom", 0);
 
-  var link_url = $('#link_url');
-  var submit_episode = $('#submit_episode');
-  var title_div = $('#title_div');
-  var offset_left = link_url.offset().left + link_url.outerWidth() - submit_episode.outerWidth();
-  submit_episode.offset({left:offset_left});
+//   var link_url = $('#link_url');
+//   var submit_episode = $('#submit_episode');
+//   var title_div = $('#title_div');
+//   var offset_left = link_url.offset().left + link_url.outerWidth() - submit_episode.outerWidth();
+//   submit_episode.offset({left:offset_left});
 
 //   var new_width = offset_left - submit_episode.offset().left + title_div.width();
 //   title_div.outerWidth(new_width);
@@ -27,7 +27,6 @@ Template.editor.rendered = function() {
 
 Template.editor.destroyed = function() {
   Session.set('current_char_counter', null);
-  Session.set('isEditing', false);
   Session.set('message', null);
 }
 
@@ -70,30 +69,6 @@ Template.editable_clip.helpers({
 });
 
 Template.editor.helpers({
-  start_timing: function() {
-    return {
-      'label': 'Start',
-      'id': 'start_time'
-    };
-  },
-  end_timing: function() {
-    return {
-      'label': 'End',
-      'id': 'end_time'
-    };
-  },
-  reset_time: function() {
-    return {
-      'label': 'Reset Time',
-      'id': 'reset_time'
-    }
-  },
-  reset_all: function() {
-    return {
-      'label': 'Reset All',
-      'id': 'reset_all'
-    }
-  },
   completed_clips: function() {
     return Clips.find({
       episode_id: this._id
@@ -103,19 +78,44 @@ Template.editor.helpers({
       }
     });
   },
-  getMessage: function() {
-    return Session.get('message');
-  },
   displayMessageStyle: function() {
     if (Session.get('message') == null) {
       return 'none';
     }
     return 'inline-block';
   },
+  end_timing: function() {
+    return {
+      'label': 'End',
+      'id': 'end_time'
+    };
+  },
   episode_and_show: function() {
     return {
       episode: this.episode,
       show: this.show
+    }
+  },
+  getMessage: function() {
+    return Session.get('message');
+  },
+  is_claimed: function(e, tmpl) {
+    var claimer_id = this.episode.claimer_id;
+    return !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
+  },
+  is_claimer: function() {
+    return client_global_has_role(['admin', 'editor']) && client_global_is_claimer(this.episode.claimer_id);
+  },
+  is_unclaimed: function(e, tmpl) {
+    return client_global_unclaimed(this.episode.claimer_id);
+  },
+  is_completed: function() {
+    return Session.get('is_completed');
+  },
+  link_text: function() {
+    return {
+      'id': 'link_text',
+      'label': 'Link Title Here'
     }
   },
   link_url: function() {
@@ -124,17 +124,23 @@ Template.editor.helpers({
       'label': 'Link URL Here'
     }
   },
-  link_text: function() {
+  reset_all: function() {
     return {
-      'id': 'link_text',
-      'label': 'Link Title Here'
+      'label': 'Reset All',
+      'id': 'reset_all'
     }
   },
-});
-
-Template.episode_title.helpers({
-  editingPermission: function(e, tmpl) {
-    return Session.get('isEditing') && global_has_role(['admin', 'editor'])
+  reset_time: function() {
+    return {
+      'label': 'Reset Time',
+      'id': 'reset_time'
+    }
+  },
+  start_timing: function() {
+    return {
+      'label': 'Start',
+      'id': 'start_time'
+    };
   }
 });
 
@@ -143,12 +149,12 @@ Template.episode_title.helpers({
 Template.editor.events({
   'click #submit_episode': function(e, tmpl) {
     if (this.episode.links.length > 0) {
-      Meteor.call('mark_episode_edited', this.episode, function(err, data) {
+      Meteor.call('mark_episode_edited', this.episode._id, function(err, data) {
         //show giant green checkmark in top right, wait 3 seconds, redirect
         if (err) {
           Session.set('message', err);
         } else {
-          Session.set('isCompleted', true);
+          Session.set('is_completed', true);
           setTimeout(function() {
             Router.go('/queue')
           }, 3000);
@@ -158,6 +164,12 @@ Template.editor.events({
       //send message saying do your job.
       Session.set('message', 'Please add a clip before submitting');
     }
+  },
+  'click #claim_episode': function(e, tmpl) {
+    Meteor.call('claim_episode', this.episode._id, Meteor.userId());
+  },
+  'click #unclaim_episode': function(e, tmpl) {
+    Meteor.call('unclaim_episode', this.episode._id, Meteor.userId());
   },
   'click #submit_clip': function(e, tmpl) {
     validate_submission(

@@ -14,13 +14,23 @@
         {{#with episode_and_show}} {{> episode_title}} {{/with}}
       </div>
 
-      {{#if isCompleted}}
+      {{#if is_completed}}
       <div class="col-md-2">
         <img id="checkmark" src="/green_checkmark.png" />
       </div>
       {{else}}
-      <div class="col-md-2" style="padding-right:0px;">
-        {{> editor_reset_button reset_all}}
+      <div class="col-md-2" style="padding-right:0px">
+        {{#if is_unclaimed}}
+        <button class="btn btn-primary btn-sm right" id="claim_episode" href="#">Claim Episode</button>
+        {{/if}}
+
+        {{#if is_claimed}}
+        <button class="btn btn-primary btn-sm right" href="#">Episode Claimed</button>
+        {{/if}}
+
+        {{#if is_claimer}}
+        <button class="btn btn-primary btn-sm right" id="unclaim_episode">Unclaim Episode</button>
+        {{/if}}
       </div>
       {{/if}}
 
@@ -66,9 +76,18 @@
       </div>
     </div>
 
+    {{#if is_claimer}}
     <div class="row">
-      <button class="btn btn-block btn-primary" id="submit_clip">Submit Clip Notes and Links</button>
+      <div class="col-md-8">
+        <div class="row">
+          <button class="btn btn-block btn-primary" id="submit_clip">Record this clip's notes and links</button>
+        </div>
+      </div>
+      <div class="col-md-4" style="padding-right:0px">
+        <button style="min-width:119px;" class="btn btn-primary right" id="submit_episode">Submit Episode</button>
+      </div>
     </div>
+    {{/if}}
     <hr style="" />
   </section>
 
@@ -81,20 +100,9 @@
 
 <template name="episode_title">
   <div class="row" style="max-height:39px;">
-    {{#if editingPermission}}
-    <div class="col-md-9" style="padding-left:0px" id="title_div">
-    {{/if}}
-
-      <h4 class="left resizeMe">{{episode.name}}</h4>
-      <h4 class="left resizeMe" style="margin-left: 10px; margin-right: 10px; text-align: center;">from</h4>
-      <h4 class="left resizeMe">{{show.name}} {{episode.number}}</h4>
-
-    {{#if editingPermission}}
-    </div>
-    <div class="col-md-3" style="padding-right:0px">
-      <button style="min-width:119px;" class="btn btn-primary right" id="submit_episode" href="#">Submit Episode</button>
-    </div>
-    {{/if}}
+    <h4 class="left resizeMe">{{episode.name}}</h4>
+    <h4 class="left resizeMe" style="margin-left: 10px; margin-right: 10px; text-align: center;">from</h4>
+    <h4 class="left resizeMe">{{show.name}} {{episode.number}}</h4>
   </div>
 </template>
 
