@@ -3,6 +3,12 @@ Meteor.startup(function() {
   if (Shows.find().count() === 0) {
     var timestamp = (new Date()).getTime();
 
+    var user_id = Accounts.createUser({
+      email:'fake@user.com',
+      password:'fakeuserpasswordatmeteor',
+      username:'Fred Editor'
+    });
+
     var nextmarket_id = Shows.insert({
       name: 'NextMarket',
       home_url: 'http://nextmarket.co/pages/podcast',
@@ -25,6 +31,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: nextmarket_id,
       edited: false,
+      claimed_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/nextmarket_podcast/NextMarket66.mp3',
       home_notes: 'Slightly too lazy to incorporate',
       seconds: 2962,
@@ -38,6 +45,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: commonsense_id,
       edited: false,
+      claimed_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/common_sense_with_dan_carlin/cswdcc257.mp3',
       seconds: 2538,
       number: 257,
@@ -49,7 +57,7 @@ Meteor.startup(function() {
       end: 110,
       notes: "I have two rows in two containers, but I can't figure out how to reduce the bottom and top margin/padding to bring the content closer.",
       episode_id: nextmarket_66_id,
-      editor_id: "Cinjon's Account",
+      editor_id: user_id,
       previous_clip_id: null,
       next_clip_id: null,
       created_at: timestamp,
@@ -60,7 +68,7 @@ Meteor.startup(function() {
       end: 603,
       notes: "The future of layout in CSS, Flexbox is the latest CSS spec designed to solve common layout problems such as vertical centering.",
       episode_id: nextmarket_66_id,
-      editor_id: "Cinjon's Account",
+      editor_id: user_id,
       previous_clip_id: fake_first_nextmarket_clip_id,
       next_clip_id: null,
       created_at: timestamp,
