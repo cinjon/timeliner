@@ -1,5 +1,5 @@
 Template.editor_player.rendered = function() {
-    load_video(0);
+  load_video(0);
 
   Meteor.Keybindings.add({
     'shift+space': function() {
