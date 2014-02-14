@@ -195,12 +195,24 @@
         </em>
       </div>
     </div>
+    {{#if editing_this_clip}}
+    <div class="row" style="margin-bottom:10px">
+      <div class="col-md-7">
+        <div class="row">
+          <button id="cancel_edits" class="btn btn-sm right">Cancel</button>
+          <button id="save_edits" class="btn btn-sm right" style="margin-right:10px">Save</button>
+        </div>
+      </div>
+    </div>
+    {{/if}}
     <div class="row">
       <div class="col-md-7">
         <div class="row">
-          <div class="editor_text_post">
+          {{#constant}}
+          <div class="editor_text_post editor_text_notes" style="cursor:pointer">
             {{notes}}
           </div>
+          {{/constant}}
         </div>
       </div>
       <div class="col-md-5" style="padding-right:0px">

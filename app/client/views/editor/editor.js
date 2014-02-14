@@ -2,6 +2,7 @@ var max_chars = 140;
 
 //TODO: Change this before giving to editors.
 Session.set('current_clip_links', [{url:'www.google.com', text:'Google'}]);
+Session.set('editing_clip', false);
 
 Template.editor.rendered = function() {
   Session.set('current_char_counter', count_text_chars($('#text')));
@@ -14,15 +15,6 @@ Template.editor.rendered = function() {
   $('#add_link_parent').css("height", height);
   $('#end_time').closest('div').css("bottom", 0);
   $('#link_text').closest('div').css("bottom", 0);
-
-//   var link_url = $('#link_url');
-//   var submit_episode = $('#submit_episode');
-//   var title_div = $('#title_div');
-//   var offset_left = link_url.offset().left + link_url.outerWidth() - submit_episode.outerWidth();
-//   submit_episode.offset({left:offset_left});
-
-//   var new_width = offset_left - submit_episode.offset().left + title_div.width();
-//   title_div.outerWidth(new_width);
 }
 
 Template.editor.destroyed = function() {
@@ -53,19 +45,23 @@ Template.character_cutoff.helpers({
 });
 
 Template.editable_clip.helpers({
-    format_time: function(time) {
-        return global_format_time(time);
-    },
-    author: function() {
-        //TODO: implement username for editors
-        var user = Meteor.users.findOne({_id:this.editor_id});
-        if (user && user.emails && user.emails[0]) {
-            return user.emails[0].address;
-        }
-    },
-    link_objs: function() {
-        return Links.find({_id:{$in:this.links}});
+  format_time: function(time) {
+    return global_format_time(time);
+  },
+  author: function() {
+    var user = Meteor.users.findOne({_id:this.editor_id});
+    if (user && user.username) {
+      return user.username;
+    } else if (user && user.emails && user.emails[0]) {
+      return user.emails[0].address;
     }
+  },
+  link_objs: function() {
+    return Links.find({_id:{$in:this.links}});
+  },
+  editing_this_clip: function() {
+    return Session.get('editing_clip') == this._id
+  }
 });
 
 Template.editor.helpers({
@@ -100,14 +96,16 @@ Template.editor.helpers({
     return Session.get('message');
   },
   is_claimed: function(e, tmpl) {
-    var claimer_id = this.episode.claimer_id;
-    return !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
+    if (this.episode) {
+      var claimer_id = this.episode.claimer_id;
+      return !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
+    }
   },
   is_claimer: function() {
-    return client_global_has_role(['admin', 'editor']) && client_global_is_claimer(this.episode.claimer_id);
+    return client_global_has_role(['admin', 'editor']) && this.episode && client_global_is_claimer(this.episode.claimer_id);
   },
   is_unclaimed: function(e, tmpl) {
-    return client_global_unclaimed(this.episode.claimer_id);
+    return this.episode && client_global_unclaimed(this.episode.claimer_id);
   },
   is_completed: function() {
     return Session.get('is_completed');
@@ -145,6 +143,31 @@ Template.editor.helpers({
 });
 
 // EVENTS
+
+Template.editable_clip.events({
+  'click .editor_text_notes': function(e, tmpl) {
+    if (!Session.get('editing_clip')) {
+      Session.set('editing_clip', this._id);
+      var editor_text_notes = e.target;
+      editor_text_notes.setAttribute("contenteditable", true);
+      editor_text_notes.style.cursor = "auto";
+      editor_text_notes.focus();
+    }
+  },
+  'click #save_edits': function(e, tmpl) {
+    var editor_text_notes = tmpl.find('.editor_text_notes');
+    Meteor.call(
+      'save_edits', this._id, editor_text_notes.innerHTML,
+      function() {
+        reset_editor_text_notes(editor_text_notes);
+      }
+    );
+  },
+  'click #cancel_edits': function(e, tmpl) {
+    reset_editor_text_notes(tmpl.find('.editor_text_notes'));
+    tmpl.find('.editor_text_post').innerHTML = this.notes;
+  }
+});
 
 Template.editor.events({
   'click #submit_episode': function(e, tmpl) {
@@ -316,4 +339,10 @@ var reset_text = function() {
   $('#text').text('');
   Session.set('current_char_counter', 0);
   $('#links').text('');
+}
+
+var reset_editor_text_notes = function(element) {
+  Session.set('editing_clip', false);
+  element.setAttribute('contentEditable', 'false');
+  element.style.cursor = 'pointer';
 }

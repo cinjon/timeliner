@@ -79,4 +79,13 @@ Meteor.methods({
       }
     });
   },
+  save_edits: function(clip_id, notes) {
+    Clips.update({
+      _id: clip_id,
+    }, {
+      $set: {
+        notes: notes
+      }
+    });
+  },
 });

@@ -23,7 +23,7 @@ Router.map(function() {
         Meteor.subscribe('show_from_route', show_route),
         Meteor.subscribe('clips_from_episode', show_route, number),
         Meteor.subscribe('links_from_episode', show_route, number),
-        Meteor.subscribe('editors', show_route, number)
+        Meteor.subscribe('editors')
       ];
     },
     data: function() {

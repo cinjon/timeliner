@@ -24,13 +24,10 @@ Meteor.publish('unedited_episodes', function() {
 });
 
 Meteor.publish('editors', function(show_route, number) {
-    //TODO: after making user creation hooks, limit this to username for editors
-    var user_ids = [];
-    Clips.find({show_route:show_route, number:number}).forEach(function(clip) {
-        user_ids.push(clip.editor_id);
-    });
-
-    return Meteor.users.find({_id:{$in:user_ids}}, {"emails.address":1, _id:0});
+  //TODO: after making user creation hooks, limit this to username for editors
+  return Meteor.users.find({}, function(user) {
+    Roles.userIsInRole(user._id, ['editor', 'admin'])
+  });
 });
 
 Meteor.publish('shows_with_unedited_episodes', function() {
