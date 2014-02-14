@@ -1,23 +1,21 @@
 <template name="editor">
   <section class="post" style="padding-bottom:0px; padding-top:0px">
-    <div class="row">
-      <div id="messages" class="col-md-10 col-md-offset-2" style="display:{{displayMessageStyle}}">
-        <div class="row">
-          <h3 style="color:#EB1E2C">{{getMessage}}</h3>
-        </div>
+    <div class="row" id="messages" style="padding-top:15px">
+      <div class="col-lg-md-12" style="display:{{displayMessageStyle}}">
+        <h4 style="color:#EB1E2C; text-align:center">{{getMessage}}</h4>
       </div>
     </div>
 
-    <div class="row"><hr /></div>
     <div class="row">
       <div class="col-md-10">
         {{#with episode_and_show}} {{> episode_title}} {{/with}}
       </div>
 
       {{#if is_completed}}
-      <div class="col-md-2">
-        <img id="checkmark" src="/green_checkmark.png" />
+      <div class="col-md-2" style="padding-right:0px">
+        <img id="checkmark" class="right" src="/green_checkmark.png" />
       </div>
+
       {{else}}
       <div class="col-md-2" style="padding-right:0px">
         {{#if is_unclaimed}}
@@ -59,7 +57,6 @@
           {{> editor_link_input link_text}}
         </div>
         <div class="col-md-3" style="position:relative; padding-right:0px;" id="add_link_parent">
-          {{> editor_reset_button reset_time}}
           <button class="btn btn-default btn-sm" id="add_link" style="position:absolute; bottom:0px; right:0px; width:79px">Add Link</button>
         </div>
       </div>
@@ -68,7 +65,9 @@
     <div class="row" style="margin-top: 10px; margin-bottom:15px">
       <div class="col-md-8">
         <div class="row">
+          {{#constant}}
           {{>editor_notes}}
+          {{/constant}}
         </div>
       </div>
       <div class="col-md-4" style="padding-right:0px">
@@ -80,11 +79,11 @@
     <div class="row">
       <div class="col-md-8">
         <div class="row">
-          <button class="btn btn-block btn-primary" id="submit_clip">Record this clip's notes and links</button>
+          <button class="btn btn-block btn-primary btn-sm" id="submit_clip">Record this clip's notes and links</button>
         </div>
       </div>
       <div class="col-md-4" style="padding-right:0px">
-        <button style="min-width:119px;" class="btn btn-primary right" id="submit_episode">Submit Episode</button>
+        <button style="min-width:119px;" class="btn btn-primary btn-sm right" id="submit_episode">Submit Episode</button>
       </div>
     </div>
     {{/if}}

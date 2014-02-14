@@ -75,7 +75,6 @@ Meteor.publish('home_shows_episodes', function() {
   home_shows().forEach(function(show) {
     show_ids.push(show._id);
   });
-  console.log(show_ids);
   return Episodes.find({
     show_id: {
       $in: show_ids

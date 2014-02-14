@@ -1,14 +1,16 @@
 var max_chars = 140;
 
 //TODO: Change this before giving to editors.
-Session.set('current_clip_links', [{url:'www.google.com', text:'Google'}]);
-Session.set('editing_clip', false);
+
+Template.editor.created = function() {
+  Session.set('message', null);
+  Session.set('current_char_counter', count_text_chars($('#text')));
+  Session.set('is_completed', false);
+  Session.set('current_clip_links', []);
+  Session.set('editing_clip', false);
+}
 
 Template.editor.rendered = function() {
-  Session.set('current_char_counter', count_text_chars($('#text')));
-  Session.set('message', null);
-  Session.set('is_completed', false);
-
   var height = $('#player').height();
   $('#editor_timing_parent').css("height", height);
   $('#editor_link_parent').css("height", height);
@@ -78,7 +80,7 @@ Template.editor.helpers({
     if (Session.get('message') == null) {
       return 'none';
     }
-    return 'inline-block';
+    return 'block';
   },
   end_timing: function() {
     return {
@@ -122,12 +124,6 @@ Template.editor.helpers({
       'label': 'Link URL Here'
     }
   },
-  reset_all: function() {
-    return {
-      'label': 'Reset All',
-      'id': 'reset_all'
-    }
-  },
   reset_time: function() {
     return {
       'label': 'Reset Time',
@@ -146,6 +142,7 @@ Template.editor.helpers({
 
 Template.editable_clip.events({
   'click .editor_text_notes': function(e, tmpl) {
+    Session.set('message', null);
     if (!Session.get('editing_clip')) {
       Session.set('editing_clip', this._id);
       var editor_text_notes = e.target;
@@ -155,6 +152,7 @@ Template.editable_clip.events({
     }
   },
   'click #save_edits': function(e, tmpl) {
+    Session.set('message', null);
     var editor_text_notes = tmpl.find('.editor_text_notes');
     Meteor.call(
       'save_edits', this._id, editor_text_notes.innerHTML,
@@ -164,6 +162,7 @@ Template.editable_clip.events({
     );
   },
   'click #cancel_edits': function(e, tmpl) {
+    Session.set('message', null);
     reset_editor_text_notes(tmpl.find('.editor_text_notes'));
     tmpl.find('.editor_text_post').innerHTML = this.notes;
   }
@@ -171,7 +170,10 @@ Template.editable_clip.events({
 
 Template.editor.events({
   'click #submit_episode': function(e, tmpl) {
-    if (this.episode.links.length > 0) {
+    if (Session.get('message') !== null) {
+      return;
+    }
+    if (Clips.find({episode_id:this.episode._id}).count() > 0) {
       Meteor.call('mark_episode_edited', this.episode._id, function(err, data) {
         //show giant green checkmark in top right, wait 3 seconds, redirect
         if (err) {
@@ -189,17 +191,21 @@ Template.editor.events({
     }
   },
   'click #claim_episode': function(e, tmpl) {
+    Session.set('message', null);
     Meteor.call('claim_episode', this.episode._id, Meteor.userId());
   },
   'click #unclaim_episode': function(e, tmpl) {
+    Session.set('message', null);
     Meteor.call('unclaim_episode', this.episode._id, Meteor.userId());
   },
   'click #submit_clip': function(e, tmpl) {
+    Session.set('message', null);
     validate_submission(
       this.episode._id,
       function(data) { //success
         Meteor.call(
-          'create_clip', data, function(err, data) {
+          'create_clip', data,
+          function(err, data) {
             reset_time();
             reset_text();
           }
@@ -211,6 +217,7 @@ Template.editor.events({
     );
   },
   'click #add_link': function(e, tmpl) {
+    Session.set('message', null);
     var url = $('#link_url').val();
     var text = $('#link_text').val();
     if (!url || url == '') {
@@ -241,15 +248,11 @@ Template.editor_reset_button.events({
   'click #reset_time': function(e, tmpl) {
     reset_time();
   },
-  'click #reset_all': function(e, tmpl) {
-    reset_time();
-    reset_text();
-    reset_message();
-  },
 });
 
 Template.editor_timing_input.events({
   'click span': function(e, tmpl) {
+    Session.set('message', null);
     var a = $(tmpl.find('a'));
     var type = a.html();
     if (type == 'End') {
@@ -271,7 +274,6 @@ var count_text_chars = function(text) {
 };
 
 var has_time = function(time) {
-  console.log(time);
   if (!time || time == '00:00:00' || !(/^(\d{2})\:(\d{2}):(\d{2})$/.test(time))) {
     return false;
   }
@@ -336,9 +338,11 @@ var reset_time = function() {
 }
 
 var reset_text = function() {
-  $('#text').text('');
   Session.set('current_char_counter', 0);
-  $('#links').text('');
+  Session.set('current_clip_links', []);
+  $('#text').text('');
+  $('#link_text').val('');
+  $('#link_url').val('');
 }
 
 var reset_editor_text_notes = function(element) {

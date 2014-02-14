@@ -51,8 +51,6 @@ Template.view_player.destroyed = function() {
 }
 
 var load_video = function(seconds) {
-    console.log('load_video')
-    console.log(seconds);
     videojs(
         "#player", {"controls":true, "preload":"auto", "autoplay":false},
         function() {
