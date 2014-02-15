@@ -84,4 +84,4 @@ Meteor.publish('home_shows_episodes', function() {
 
 var home_shows = function() {
   return Shows.find(); //TODO: change to incorporate some selection process, maybe recent
-}
+};
