@@ -82,9 +82,6 @@
           <button class="btn btn-block btn-primary btn-sm" id="submit_clip">Record this clip's notes and links</button>
         </div>
       </div>
-      <div class="col-md-4" style="padding-right:0px">
-        <button style="min-width:119px;" class="btn btn-primary btn-sm right" id="submit_episode">Submit Episode</button>
-      </div>
     </div>
     {{/if}}
     <hr style="" />
@@ -95,6 +92,15 @@
   {{> editable_clip}}
   {{/each}}
   {{/with}}
+
+  {{#if is_claimer}}
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <button style="min-width:119px;" class="btn btn-primary btn-block btn-sm" id="submit_episode">Submit Episode</button>
+    </div>
+  </div>
+  {{/if}}
 </template>
 
 <template name="episode_title">
@@ -156,18 +162,19 @@
 <template name="editor_links">
   <small class="box_title"><i>Links</i></small>
   <div style="overflow-x:hidden; overflow-y:scroll; max-height:95px">
-    {{#each current_clip_links}}
-    <div class="row">
-      {{> clip_link}}
-    </div>
-    {{/each}}
+    <ul style="list-style-type: none; padding-left:0px">
+      {{#each current_clip_links}}
+        {{> clip_link}}
+      {{/each}}
+    </ul>
   </div>
 </template>
 
 <template name="clip_link">
-  <span class="glyphicon glyphicon-remove"></span>
-<!--   <a class="btn-small remove_link" href="#" url=""><span class="glyphicon glyphicon-remove"></span></a> -->
-  <a href="{{url}}"><span>{{text}}</span></a>
+  <li>
+    <a class="remove_link" style="cursor:pointer"><i class="fa fa-times"></i></a>
+    <a href="{{url}}"><span>{{text}}</span></a>
+  </li>
 </template>
 
 <template name="links_example">
@@ -217,9 +224,11 @@
       </div>
       <div class="col-md-5" style="padding-right:0px">
         <div class="editor_text_post">
-          <ul>
+          <ul style="list-style-type: none; padding-left:0px">
             {{#each link_objs}}
-            <li><a href="{{url}}">{{text}}</a>
+            <li>
+              <a clip_id="{{../_id}}" class="remove_link" style="cursor:pointer"><i class="fa fa-times"></i></a>
+              <a href="{{url}}"><span>{{text}}</span></a>
             </li>
             {{/each}}
           </ul>
