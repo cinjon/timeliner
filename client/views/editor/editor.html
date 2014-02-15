@@ -65,9 +65,7 @@
     <div class="row" style="margin-top: 10px; margin-bottom:15px">
       <div class="col-md-8">
         <div class="row">
-          {{#constant}}
           {{>editor_notes}}
-          {{/constant}}
         </div>
       </div>
       <div class="col-md-4" style="padding-right:0px">
@@ -145,8 +143,7 @@
 </template>
 
 <template name="editor_notes">
-  <small class="box_title"><i>Notes</i>
-  </small>
+  <small class="box_title">Notes</small>
   {{>character_cutoff}}
   <div id="text" class="editor_text" contenteditable="true"></div>
 </template>
@@ -160,7 +157,7 @@
 
 
 <template name="editor_links">
-  <small class="box_title"><i>Links</i></small>
+  <small class="box_title">Links</small>
   <div style="overflow-x:hidden; overflow-y:scroll; max-height:95px">
     <ul style="list-style-type: none; padding-left:0px">
       {{#each current_clip_links}}
@@ -184,7 +181,7 @@
 </template>
 
 <template name="editable_clip">
-  <section class="post" style="padding-bottom:5px; padding-top:5px">
+  <section class="post" style="padding-bottom:8px; padding-top:8px">
     <div class="row" style="padding-bottom:25px">
       <div style="float:left; margin-right:15px">
         <em>
@@ -206,8 +203,13 @@
     <div class="row" style="margin-bottom:10px">
       <div class="col-md-7">
         <div class="row">
-          <button id="cancel_edits" class="btn btn-sm right">Cancel</button>
-          <button id="save_edits" class="btn btn-sm right" style="margin-right:10px">Save</button>
+          <div class="col-md-8" style="padding-left:0px">
+            <div id="cutoff_message" style="color:#EB1E2C;"></div>
+          </div>
+          <div class="col-md-4" style="padding-right:0px">
+            <button id="cancel_edits" class="btn btn-sm right">Cancel</button>
+            <button id="save_edits" class="btn btn-sm right" style="margin-right:10px">Save</button>
+          </div>
         </div>
       </div>
     </div>

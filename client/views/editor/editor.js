@@ -65,9 +65,8 @@ Template.editable_clip.helpers({
     return Session.get('editing_clip') == this._id
   },
   clip_id: function() {
-    console.log(this._id);
     return this._id;
-  }
+  },
 });
 
 Template.editor.helpers({
@@ -161,17 +160,23 @@ Template.editable_clip.events({
     Meteor.call('remove_link', this._id, clip_id);
   },
   'click #save_edits': function(e, tmpl) {
-    Session.set('message', null);
     var editor_text_notes = tmpl.find('.editor_text_notes');
-    Meteor.call(
-      'save_edits', this._id, editor_text_notes.innerHTML,
-      function() {
-        reset_editor_text_notes(editor_text_notes);
-      }
-    );
+    var text = editor_text_notes.innerText;
+    if (text.length <= 140) {
+      $('#cutoff_message').html('');
+      Meteor.call(
+        'save_edits', this._id, text,
+        function() {
+          reset_editor_text_notes(editor_text_notes);
+        }
+      );
+    } else {
+      $('#cutoff_message').html('The text is too long');
+    }
   },
   'click #cancel_edits': function(e, tmpl) {
     Session.set('message', null);
+    $(tmpl.find('.cutoff_message')).html('');
     reset_editor_text_notes(tmpl.find('.editor_text_notes'));
     tmpl.find('.editor_text_post').innerHTML = this.notes;
   }
