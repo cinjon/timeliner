@@ -88,4 +88,13 @@ Meteor.methods({
       }
     });
   },
+  remove_link: function(link_id, clip_id) {
+    Clips.update({_id:clip_id}, {$pull:{'links':link_id}});
+    Clips.find({_id:clip_id}).forEach(function(clip) {
+      Episodes.update(
+        {_id:clip.episode_id},
+        {$pull:{'links':link_id}}
+      );
+    });
+  }
 });
