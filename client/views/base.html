@@ -7,7 +7,10 @@
           {{accountButtons}}
         </ul>
         {{#if user_is_editor}}
-        <a href="{{pathFor 'queue'}}">Editor Queue</a>
+          <p><a href="{{pathFor 'queue'}}">Editor Queue</a></p>
+        {{/if}}
+        {{#if user_is_admin}}
+          <p><a href="{{pathFor 'admin'}}">Admin</a></p>
         {{/if}}
       </div>
       {{yield 'secondary'}}

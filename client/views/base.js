@@ -17,7 +17,13 @@ Template.base.events ({
 
 Template.base.helpers({
   user_is_editor: function () {
-    if (Roles.userIsInRole(Meteor.userId(), ['editor'])) {
+    if ( Roles.userIsInRole(Meteor.userId(), ['editor']) ) {
+      return true;
+    }
+  },
+
+  user_is_admin: function () {
+    if ( Roles.userIsInRole(Meteor.userId(), ['admin']) ) {
       return true;
     }
   }
