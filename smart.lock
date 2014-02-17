@@ -5,11 +5,13 @@
       "iron-router": {},
       "roles": {},
       "collection-hooks": {},
-      "keybindings": {},
       "accounts-entry": {},
       "winston": {},
       "winston-papertrail": {},
-      "houston": {}
+      "houston": {},
+      "keybindings-mod": {
+        "path": "packages/meteor-keybindings"
+      }
     },
     "packages": {
       "iron-router": {
@@ -26,11 +28,6 @@
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
         "tag": "v0.6.2",
         "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
-      },
-      "keybindings": {
-        "git": "https://github.com/matteodem/meteor-keybindings.git",
-        "tag": "v0.3.8",
-        "commit": "7102c7329453c18c63846d74d0b51ef35a23e945"
       },
       "accounts-entry": {
         "git": "https://github.com/BeDifferential/accounts-entry.git",
@@ -51,6 +48,9 @@
         "git": "https://github.com/gterrono/meteor-admin-ui.git",
         "tag": "v1.0.0",
         "commit": "e98660af09cb3e4e90848abfe943a06e7068cccc"
+      },
+      "keybindings-mod": {
+        "path": "packages/meteor-keybindings"
       },
       "just-i18n": {
         "git": "https://github.com/subhog/meteor-just-i18n.git",

@@ -1,54 +1,50 @@
 Template.editor_player.rendered = function() {
   load_video(0);
 
+
+  // testing this out as a fix for shortcut 'stacking' effect
+  // theory: rerendered player was executing each shortcut multiple times
+  Meteor.Keybindings.removeAll();
+
   Meteor.Keybindings.add({
-    'shift+space': function() {
+    'ctrl+space': function() {
       if (videojs("#player").paused()) {
         videojs("#player").play();
       } else {
         videojs("#player").pause();
       }
     },
-    'shift+←': function() {
+    'ctrl+,': function() {
       time = videojs("#player").currentTime();
-      videojs("#player").currentTime(time - 10);
+      videojs("#player").currentTime(time - 5);
     },
-    'shift+alt+←': function() {
+    'ctrl+.': function() {
       time = videojs("#player").currentTime();
-      videojs("#player").currentTime(time - 60);
+      videojs("#player").currentTime(time + 5);
     },
-    'shift+→': function() {
-      time = videojs("#player").currentTime();
-      videojs("#player").currentTime(time + 10);
-    },
-    'shift+alt+→': function() {
-      time = videojs("#player").currentTime();
-      videojs("#player").currentTime(time + 60);
-    },
-    'shift+↑': function() {
+    'ctrl+1': function() {
       time = videojs("#player").currentTime();
       global_record_time("start_time");
     },
-    'shift+↓': function() {
+    'ctrl+2': function() {
       time = videojs("#player").currentTime();
       global_record_time("end_time");
     }
   });
-}
+};
 
 Template.view_player.rendered = function() {
     load_video(998);
-}
+};
 
 Template.editor_player.destroyed = function() {
     dispose_video();
-    Meteor.Keybindings.remove(['shift+space', 'shift+←', 'shift+alt+←',
-        'shift+→', 'shift+alt+→', 'shift+↑', 'shift+↓' ]);
-}
+    Meteor.Keybindings.removeAll();
+};
 
 Template.view_player.destroyed = function() {
     dispose_video();
-}
+};
 
 var load_video = function(seconds) {
     videojs(
@@ -59,8 +55,8 @@ var load_video = function(seconds) {
             this.currentTime(seconds);
         }
     );
-}
+};
 
 var dispose_video = function() {
     videojs("#player").dispose();
-}
+};

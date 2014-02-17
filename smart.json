@@ -3,10 +3,12 @@
     "iron-router": {},
     "roles": {},
     "collection-hooks": {},
-    "keybindings": {},
     "accounts-entry": {},
     "winston": {},
     "winston-papertrail": {},
-    "houston": {}
+    "houston": {},
+    "keybindings-mod": {
+      "path": "./packages/meteor-keybindings"
+    }
   }
 }
