@@ -14,21 +14,33 @@ Template.editor_player.rendered = function() {
         videojs("#player").pause();
       }
     },
-    'ctrl+,': function() {
+    'ctrl+,': function () {
       time = videojs("#player").currentTime();
       videojs("#player").currentTime(time - 5);
     },
-    'ctrl+.': function() {
+    'ctrl+.': function () {
       time = videojs("#player").currentTime();
       videojs("#player").currentTime(time + 5);
     },
-    'ctrl+1': function() {
+    'ctrl+1': function () {
       time = videojs("#player").currentTime();
       global_record_time("start_time");
     },
-    'ctrl+2': function() {
+    'ctrl+2': function () {
       time = videojs("#player").currentTime();
       global_record_time("end_time");
+    },
+    'ctrl+3': function () {
+      $('#notes').focus();
+    },
+    'ctrl+4': function () {
+      $('#link_url').focus();
+    },
+    'ctrl+5': function () {
+      $('#link_text').focus();
+    },
+    'ctrl+6': function () {
+      $('#add_link').click();
     }
   });
 };

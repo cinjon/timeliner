@@ -4,7 +4,7 @@ var max_chars = 140;
 
 Template.editor.created = function() {
   Session.set('message', null);
-  Session.set('current_char_counter', count_text_chars($('#text')));
+  Session.set('current_char_counter', count_text_chars($('#notes')));
   Session.set('is_completed', false);
   Session.set('current_clip_links', []);
   Session.set('editing_clip', false);
@@ -267,7 +267,7 @@ Template.clip_link.events({
 });
 
 Template.editor_notes.events({
-  'keyup #text': function(e, tmpl) {
+  'keyup #notes': function(e, tmpl) {
     Session.set('current_char_counter', count_text_chars($(e.target)));
   }
 });
@@ -323,7 +323,7 @@ var time_in_order = function(start, end) {
 
 var validate_submission = function(episode_id, success_callback, fail_callback) {
   var data = {};
-  var count_chars = count_text_chars($('#text'));
+  var count_chars = count_text_chars($('#notes'));
   var start = $('#start_time').val()
   var end = $('#end_time').val()
 
@@ -347,7 +347,7 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
       clip_data: {
         start: time_to_seconds(start),
         end: time_to_seconds(end),
-        notes: $('#text').text(),
+        notes: $('#notes').text(),
         episode_id: episode_id,
         editor_id: Meteor.user()._id,
         created_at: timestamp,
@@ -368,7 +368,7 @@ var reset_time = function() {
 var reset_text = function() {
   Session.set('current_char_counter', 0);
   Session.set('current_clip_links', []);
-  $('#text').text('');
+  $('#notes').text('');
   $('#link_text').val('');
   $('#link_url').val('');
 }
