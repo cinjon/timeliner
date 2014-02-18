@@ -13,7 +13,6 @@ Template.editor.created = function() {
 Template.editor.rendered = function() {
   var height = $('#player').height();
   $('#editor_timing_parent').css("height", height);
-  $('#editor_link_parent').css("height", height);
   $('#add_link_parent').css("height", height);
   $('#end_time').closest('div').css("bottom", 0);
   $('#link_text').closest('div').css("bottom", 0);

@@ -53,14 +53,8 @@
         {{> editor_timing_input end_timing}}
       </div>
 
-      <div class="col-md-6" style="padding-right:0px">
-        <div class="col-md-9" style="position:relative; padding-right:0px" id="editor_link_parent">
-          {{> editor_link_input link_url}}
-          {{> editor_link_input link_text}}
-        </div>
-        <div class="col-md-3" style="position:relative; padding-right:0px;" id="add_link_parent">
-          <button class="btn btn-default btn-sm" id="add_link" style="position:absolute; bottom:0px; right:0px; width:79px">Add Link</button>
-        </div>
+      <div class="col-md-4 col-md-offset-2" style="padding-right:0px">
+        {{> editor_links}}
       </div>
     </div>
 
@@ -70,8 +64,11 @@
           {{>editor_notes}}
         </div>
       </div>
-      <div class="col-md-4" style="padding-right:0px">
-        {{> editor_links}}
+      <div class="col-md-4" id="editor_link_parent" style="padding-right:0px;">
+        <small class="box_title">Add Link</small>
+        {{> editor_link_input link_url}}
+        {{> editor_link_input link_text}}
+        <button class="btn btn-default btn-sm" id="add_link" style="width:79px; float:right">Add Link</button>
       </div>
     </div>
 
@@ -151,7 +148,7 @@
 </template>
 
 <template name="editor_link_input">
-  <div class="input-group input-group-sm" style="position:absolute; width:100%">
+  <div class="input-group input-group-sm" style="width:100%; margin-bottom:5px">
     <span class="input-group-addon"></span>
     <input class="form-control" type="text" id="{{id}}" placeholder="{{label}}"/>
   </div>
@@ -159,13 +156,16 @@
 
 
 <template name="editor_links">
-  <small class="box_title">Links</small>
-  <div style="overflow-x:hidden; overflow-y:scroll; max-height:95px">
-    <ul style="list-style-type: none; padding-left:0px">
-      {{#each current_clip_links}}
-        {{> clip_link}}
-      {{/each}}
-    </ul>
+  <div class="row">
+    <div class="col-md-10">
+      <div style="overflow-x:hidden; overflow-y:scroll; max-height:85px">
+        <ul style="list-style-type: none; padding-left:0px">
+          {{#each current_clip_links}}
+          {{> clip_link}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
