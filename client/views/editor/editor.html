@@ -1,9 +1,11 @@
 <template name="editor">
   <section class="post" style="padding-bottom:0px; padding-top:0px">
     <div class="row" id="messages" style="padding-top:15px">
+      {{#isolate}}
       <div class="col-lg-md-12" style="display:{{displayMessageStyle}}">
         <h4 style="color:#EB1E2C; text-align:center">{{getMessage}}</h4>
       </div>
+      {{/isolate}}
     </div>
 
     <div class="row">
