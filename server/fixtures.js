@@ -1,5 +1,6 @@
 Meteor.startup(function() {
   embed_links_in_clips();
+  update_episodes_approved();
 
   //bootstrap an empty db
   if (Shows.find().count() === 0) {
@@ -207,4 +208,8 @@ var embed_links_in_clips = function() {
     });
     Clips.update({_id:clip._id}, {$set:{links:embed_links}});
   });
+}
+
+var update_episodes_approved = function() {
+  Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
 }

@@ -44,6 +44,10 @@ Meteor.publish('shows_with_unedited_episodes', function() {
   });
 });
 
+Meteor.publish('unapproved_episodes', function() {
+  return Episodes.find({approved:false, edited:true});
+});
+
 Meteor.publish('clips_from_episode', function(show_route, number) {
   var episode = Episodes.findOne({
     show_route: show_route,

@@ -1,0 +1,34 @@
+<template name="staging">
+  <hr>
+  <h4>Staging</h4>
+  <hr>
+  {{#each show_names}}
+  <div class="row">
+    <div class="col-md-3">
+      <p style="font-size:75%">{{name}}</p>
+    </div>
+    <div class="col-md-9">
+      {{#each unapproved_episodes}}
+      {{> unapproved_episode}}
+      {{/each}}
+    </div>
+  </div>
+  {{/each}}
+</template>
+
+<template name="unapproved_episode">
+  <div class="row">
+    <div class="col-md-1">
+      {{number}}
+    </div>
+    <div class="col-md-3">
+      {{name}}
+    </div>
+    <div class="col-md-1">
+      Created: {{created_at}}
+    </div>
+    <div class="col-md-1">
+      {{links_count}} Links
+    </div>
+  </div>
+</template>
