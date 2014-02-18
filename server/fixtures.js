@@ -1,5 +1,7 @@
-//bootstrap an empty db
 Meteor.startup(function() {
+  embed_links_in_clips();
+
+  //bootstrap an empty db
   if (Shows.find().count() === 0) {
     var timestamp = (new Date()).getTime();
 
@@ -196,3 +198,13 @@ Meteor.startup(function() {
     });
   }
 });
+
+var embed_links_in_clips = function() {
+  Clips.find().forEach(function(clip) {
+    var link_ids = clip.links;
+    var embed_links = Links.find({_id:{$in:link_ids}}).map(function(link) {
+      return {url:link.url, text:link.text, created_at:link.created_at, shortened_url:link.shortened_url};
+    });
+    Clips.update({_id:clip._id}, {$set:{links:embed_links}});
+  });
+}
