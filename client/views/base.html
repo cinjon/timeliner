@@ -2,35 +2,32 @@
   <div id="secondary" class="col-sm-3 sidebar" style="display: none;">
     <aside>
       <div class="tags">
-        <h4>Goto</h4>
         <ul>
-          <h5>{{accountButtons}}</h5>
+          <h4>{{> custom_account_buttons}}</h4>
         </ul>
-        {{#if user_is_editor}}
-          <p><a href="{{pathFor 'queue'}}">Editor Queue</a></p>
-        {{/if}}
         {{#if user_is_admin}}
-          <p><a href="{{pathFor 'admin'}}">Admin</a></p>
+          <h4><a href="{{pathFor 'admin'}}">Admin</a></h4>
+        {{/if}}
+        {{#if user_is_editor}}
+          <h4><a href="{{pathFor 'queue'}}">Editor Queue</a></h4>
+          <h4><a href="">Editor FAQ</a></h4>
+          <br />
+          <h4>Hotkeys</h4>
+          <ul>
+            <li><p>CTRL + SPACE => Play/Pause</p></li>
+            <li><p>CTRL + , => Skip back 5s</p></li>
+            <li><p>CTRL + . => Skip forward 5s</p></li>
+            <li><p>CTRL + 1 => Set Start time</p></li>
+            <li><p>CTRL + 2 => Set End time</p></li>
+            <li><p>CTRL + 3 => Jump to Notes</p></li>
+            <li><p>CTRL + 4 => Jump to Link URL</p></li>
+            <li><p>CTRL + 5 => Jump to Link Title</p></li>
+            <li><p>CTRL + 6 => Add Link</p></li>
+            <li><p>CTRL + RETURN => Record Clip</p></li>
+          </ul>
         {{/if}}
       </div>
       {{yield 'secondary'}}
-
-      {{#if user_is_editor}}
-      <h4>Hotkeys</h4>
-      <ul>
-        <li>CTRL + SPACE => Play/Pause</li>
-        <li>CTRL + , => Skip back 5s</li>
-        <li>CTRL + . => Skip forward 5s</li>
-        <li>CTRL + 1 => Set Start time</li>
-        <li>CTRL + 2 => Set End time</li>
-        <li>CTRL + 3 => Jump to Notes</li>
-        <li>CTRL + 4 => Jump to Link URL</li>
-        <li>CTRL + 5 => Jump to Link Title</li>
-        <li>CTRL + 6 => Add Link</li>
-        <li>CTRL + RETURN => Record Clip</li>
-      </ul>
-      <h4><a href="">Editor FAQ</a></h4>
-      {{/if}}
     </aside>
   </div>
   <!-- /#secondary -->

@@ -1,0 +1,12 @@
+<template name="custom_account_buttons">
+  {{#if currentUser}}
+
+    <li>{{{beforeSignedInAs}}}{{signedInAs}}
+         - <a href="/sign-out">{{{beforeSignOut}}}{{i18n "signOut"}}</a></li>
+
+  {{else}}
+
+    <li><a href="/sign-in">Sign in/up</a></li>
+
+  {{/if}}
+</template>
