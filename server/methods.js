@@ -57,7 +57,8 @@ Meteor.methods({
     }, {
       $set: {
         updated_at: timestamp,
-        edited: true
+        edited: true,
+        claimed_id: null
       }
     });
   },
