@@ -1,6 +1,5 @@
 Template.home.helpers({
     shows: function() { //should only return what server decides are top shows
-        console.log(Shows.find());
         return Shows.find();
     },
     edited_episodes: function() {

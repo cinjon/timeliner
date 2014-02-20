@@ -198,6 +198,7 @@ Meteor.startup(function() {
 
   embed_links_in_clips();
   update_episodes_approved();
+  delete_link_model();
 });
 
 var embed_links_in_clips = function() {
@@ -212,4 +213,9 @@ var embed_links_in_clips = function() {
 
 var update_episodes_approved = function() {
   Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
+}
+
+var delete_link_model = function() {
+  Episodes.update({links:{$exists:true}}, {$unset:{links:true}}, {multi:true});
+  return Links.remove({});
 }
