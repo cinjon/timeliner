@@ -48,12 +48,17 @@
         </div>
       </div>
 
-      <div class="col-md-2" style="position:relative" id="editor_timing_parent">
+      <div class="col-md-2" style="position:relative" id="editor_start_back_parent">
         {{> editor_timing_input start_timing}}
-        {{> editor_timing_input end_timing}}
+        {{> editor_skip_button  rewind}}
       </div>
 
-      <div class="col-md-4 col-md-offset-2" style="padding-right:0px">
+      <div class="col-md-2" style="position:relative" id="editor_end_forward_parent">
+        {{> editor_timing_input end_timing}}
+        {{> editor_skip_button  skip}}
+      </div>
+
+      <div class="col-md-4" style="padding-right:0px">
         {{> editor_links}}
       </div>
     </div>
@@ -120,6 +125,15 @@
       <a id="{{label}}_timer">{{label}}</a>
     </span>
     <input class="form-control" type="text" id="{{id}}" style="width:65px" placeholder="00:00:00">
+  </div>
+</template>
+
+<template name="editor_skip_button">
+  <div class="input-group input-group-sm" style="position:absolute; margin-left:10px">
+    <span class="input-group-addon" style="min-width:46px; cursor:pointer">
+      <i class="fa fa-arrow-circle-{{direction}}"></i>
+    </span>
+    <button class="btn btn-default btn-sm" id="{{id}}" style="width:65px">{{label}}</button>
   </div>
 </template>
 
