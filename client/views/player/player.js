@@ -52,6 +52,10 @@ Template.editor_player.rendered = function() {
     'ctrl+6': function () {
       $('#add_link').click();
       e.preventDefault();
+    },
+    'ctrl+enter': function () {
+      $('#submit_clip').click();
+      e.preventDefault();
     }
   });
 };
