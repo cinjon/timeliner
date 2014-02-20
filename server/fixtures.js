@@ -1,7 +1,4 @@
 Meteor.startup(function() {
-  embed_links_in_clips();
-  update_episodes_approved();
-
   //bootstrap an empty db
   if (Shows.find().count() === 0) {
     var timestamp = (new Date()).getTime();
@@ -198,6 +195,9 @@ Meteor.startup(function() {
       show_route: 'Common-Sense-With-Dan-Carlin'
     });
   }
+
+  embed_links_in_clips();
+  update_episodes_approved();
 });
 
 var embed_links_in_clips = function() {
