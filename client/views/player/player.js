@@ -18,14 +18,10 @@ Template.editor_player.rendered = function() {
       e.preventDefault();
     },
     'ctrl+,': function () {
-      time = videojs("#player").currentTime();
-      videojs("#player").currentTime(time - 5);
-      e.preventDefault();
+     global_skip_player("Back");
     },
     'ctrl+.': function () {
-      time = videojs("#player").currentTime();
-      videojs("#player").currentTime(time + 5);
-      e.preventDefault();
+      global_skip_player("Forward");
     },
     'ctrl+1': function () {
       time = videojs("#player").currentTime();
@@ -73,6 +69,10 @@ Template.view_player.destroyed = function() {
     dispose_video();
 };
 
+var dispose_video = function() {
+    videojs("#player").dispose();
+};
+
 var load_video = function(seconds) {
     videojs(
         "#player", {"controls":true, "preload":"auto", "autoplay":false},
@@ -82,8 +82,4 @@ var load_video = function(seconds) {
             this.currentTime(seconds);
         }
     );
-};
-
-var dispose_video = function() {
-    videojs("#player").dispose();
 };

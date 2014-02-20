@@ -15,8 +15,8 @@ Template.editor.rendered = function() {
   $('#editor_start_back_parent').css("height", height);
   $('#editor_end_forward_parent').css("height", height);
   $('#add_link_parent').css("height", height);
-  $('#skip_button').closest('div').css("bottom", 0);
-  $('#rewind_button').closest('div').css("bottom", 0);
+  $('#skip_forward_button').closest('div').css("bottom", 0);
+  $('#skip_back_button').closest('div').css("bottom", 0);
   $('#link_text').closest('div').css("bottom", 0);
 }
 
@@ -71,12 +71,6 @@ Template.editable_clip.helpers({
 });
 
 Template.editor.helpers({
-  rewind: function() {
-    return {
-      'label': 'Rewind',
-      'id': 'rewind_button'
-    }
-  },
   completed_clips: function() {
     return Clips.find({
       episode_id: this._id
@@ -104,10 +98,16 @@ Template.editor.helpers({
       show: this.show
     }
   },
-  skip: function() {
+  skip_back: function() {
     return {
-      'label': 'Skip',
-      'id': 'skip_button'
+      'label': 'Back',
+      'id': 'skip_back_button'
+    }
+  },
+  skip_forward: function() {
+    return {
+      'label': 'Forward',
+      'id': 'skip_forward_button'
     }
   },
   getMessage: function() {
@@ -293,18 +293,18 @@ Template.editor_reset_button.events({
 
 Template.editor_skip_button.events({
   'click span': function(e, tmpl) {
-    return move_player(this.label);
+    return global_skip_player(this.label);
   },
   'click button': function(e, tmpl) {
-    return move_player(this.label);
+    return global_skip_player(this.label);
   }
 });
 
 Template.editor_skip_button.helpers({
   direction: function() {
-    if (this.label == "rewind") {
+    if (this.label == "Back") {
       return "left";
-    } else if (this.label == "skip") {
+    } else if (this.label == "Forward") {
       return "right";
     } else {
       return "up";
