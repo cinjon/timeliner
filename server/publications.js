@@ -77,26 +77,19 @@ Meteor.publish('shows_with_unedited_episodes', function() {
 });
 
 Meteor.publish('trial', function(user_id) {
-  var trial_id = Trials.findOne({user_id:user_id})._id;
-  if (!trial_id) {
-    var fatman = Shows.findOne({show_route:'Fat-Burning-Man'});
-    var trial_id = Trials.insert({
-      name: 'Dr. Sara Gottfried',
-      show_id: fatman._id,
-      show_route: 'Fat-Burning-Man',
-      number: 82,
-      edited: false,
-      seconds: null, //TODO: fill in
-      s3: 'http://s3timeliner.s3.amazonaws.com/fat-burning-man/82.mp3',
-      created_at: timestamp,
-      links: [],
-      user_id: user_id,
-      started_time: null,
-      completed_time: null
-    });
-  }
-  return Trials.findOne({_id:trial_id});
+  return Trials.find({user_id:user_id, completed_time:null});
 });
+
+Meteor.publish('trial_shows', function() {
+  return Shows.find({
+    show_route:{
+      $in:Trials.find({user_id:'TEMPLATE_TRIAL'}).map(function(trial) {
+        return trial.show_route;
+      })
+    }
+  });
+});
+
 
 Meteor.publish('unapproved_episodes', function() {
   return Episodes.find({approved:false, edited:true});

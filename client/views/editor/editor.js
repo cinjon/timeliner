@@ -120,7 +120,7 @@ Template.editor.helpers({
     }
   },
   is_claimer: function() {
-    return client_global_has_role(['admin', 'editor']) && this.episode && client_global_is_claimer(this.episode.claimer_id);
+    return (client_global_has_role(['admin', 'editor']) && this.episode && client_global_is_claimer(this.episode.claimer_id)) || Session.get('trial_running')
   },
   is_unclaimed: function(e, tmpl) {
     return this.episode && client_global_unclaimed(this.episode.claimer_id);
@@ -130,6 +130,10 @@ Template.editor.helpers({
   },
   is_trial: function() {
     return Session.get('trial');
+  },
+  is_trial_running: function() {
+    console.log(Session.get('trial_running'));
+    return Session.get('trial_running');
   },
   link_text: function() {
     return {
@@ -204,7 +208,9 @@ Template.editor.events({
       return;
     }
     if (Session.get('trial')) { //trial editor
-      Meteor.call('end_trial', Meteor.userId());
+      Meteor.call('end_trial', Meteor.userId(), function() {
+        Session.set('trial_running', false)
+      });
     } else if (Clips.find({episode_id:this.episode._id}).count() > 0) {
       Meteor.call('mark_episode_edited', this.episode._id, function(err, data) {
         if (err) {
@@ -230,7 +236,10 @@ Template.editor.events({
   },
   'click #start_trial': function(e, tmpl) {
     Session.set('message', null);
-    Meteor.call('start_trial', Meteor.userId());
+    Meteor.call('start_trial', Meteor.userId(), function() {
+      console.log('starting trial')
+      Session.set('trial_running', true)
+    });
   },
   'click #submit_clip': function(e, tmpl) {
     Session.set('message', null);

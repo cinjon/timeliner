@@ -21,7 +21,15 @@
       {{else}}
       <div class="col-md-2" style="padding-right:0px">
         {{#if is_trial}}
-          <button class="btn btn-primary btn-sm right" id="start_trial">Start</button>
+          {{#if currentUser}}
+            {{#if is_trial_running}}
+              <button class="btn btn-info btn-sm right">Started</small>
+            {{else}}
+              <button class="btn btn-primary btn-sm right" id="start_trial">Start</button>
+            {{/if}}
+          {{else}}
+              <button class="btn btn-info bnt-sm right">Please Log In</small>
+          {{/if}}
         {{else}}
           {{#if is_unclaimed}}
           <button class="btn btn-primary btn-sm right" id="claim_episode" href="#">Claim Episode</button>

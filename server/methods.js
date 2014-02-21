@@ -67,7 +67,21 @@ Meteor.methods({
   },
   start_trial: function(user_id) {
     var timestamp = (new Date()).getTime();
-    Trials.update({user_id:user_id}, {$set:{started_time:timestamp}});
+    var template = Trials.findOne({user_id:"TEMPLATE_TRIAL"});
+    Trials.insert({
+      name: template.name,
+      show_id: template.show_id,
+      show_route: template.show_route,
+      number: template.number,
+      edited: false,
+      seconds: template.seconds,
+      s3: template.s3,
+      created_at: timestamp,
+      links: [],
+      user_id: user_id,
+      started_time: timestamp,
+      completed_time: null
+    });
   },
   unclaim_episode: function(episode_id, user_id) {
     Episodes.update({

@@ -1,6 +1,10 @@
 Meteor.startup(function() {
   //bootstrap an empty db
+  console.log('yoooo');
+
   if (Shows.find().count() === 0) {
+    console.log('in show count');
+
     var timestamp = (new Date()).getTime();
 
     var cinjon_id = Accounts.createUser({
@@ -15,7 +19,7 @@ Meteor.startup(function() {
       username:'matt'
     });
     Roles.addUsersToRoles(matt_id, ['admin', 'editor', 'user-admin']);
-
+    console.log('past users');
 
     var nextmarket_id = Shows.insert({
       name: 'NextMarket',
@@ -53,6 +57,7 @@ Meteor.startup(function() {
       description:null
     });
 
+    console.log('inserted shows');
     var gottfried_id = Episodes.insert({
       name: 'Dr. Sara Gottfried',
       home_url: 'http://www.fatburningman.com/dr-sara-gottfried-hormones-for-men/',
@@ -194,28 +199,42 @@ Meteor.startup(function() {
       number: 257,
       show_route: 'Common-Sense-With-Dan-Carlin'
     });
+
+    console.log('inserted episodes');
   }
 
-  embed_links_in_clips();
+  console.log('yo')
   update_episodes_approved();
-  delete_link_model();
+  console.log('hi ya');
+  make_empty_trial(commonsense_id, 'Common-Sense-With-Dan-Carlin', 'Monopolizing the Democracy',
+                   'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3', 257, 2538);
 });
-
-var embed_links_in_clips = function() {
-  Clips.find().forEach(function(clip) {
-    var link_ids = clip.links;
-    var embed_links = Links.find({_id:{$in:link_ids}}).map(function(link) {
-      return {url:link.url, text:link.text, created_at:link.created_at, shortened_url:link.shortened_url};
-    });
-    Clips.update({_id:clip._id}, {$set:{links:embed_links}});
-  });
-}
 
 var update_episodes_approved = function() {
   Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
 }
 
-var delete_link_model = function() {
-  Episodes.update({links:{$exists:true}}, {$unset:{links:true}}, {multi:true});
-  return Links.remove({});
+var make_empty_trial = function(show_id, show_route, name, s3, number, seconds) {
+  console.log('in met');
+  var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL'});
+  if (trial) {
+    console.log('have trial');
+    return;
+  } else {
+    console.log('ins trial');
+    var trial_id = Trials.insert({
+      name: name,
+      created_at: timestamp,
+      show_id: show_id,
+      edited: false,
+      s3: s3,
+      seconds: seconds,
+      number: number,
+      show_route: show_route,
+      started_time: null,
+      completed_time: null,
+      user_id: 'TEMPLATE_TRIAL',
+      links: []
+    });
+  }
 }
