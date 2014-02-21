@@ -128,6 +128,9 @@ Template.editor.helpers({
   is_completed: function() {
     return Session.get('is_completed');
   },
+  is_trial: function() {
+    return Session.get('trial');
+  },
   link_text: function() {
     return {
       'id': 'link_text',
@@ -200,9 +203,10 @@ Template.editor.events({
     if (Session.get('message') !== null) {
       return;
     }
-    if (Clips.find({episode_id:this.episode._id}).count() > 0) {
+    if (Session.get('trial')) { //trial editor
+      Meteor.call('end_trial', Meteor.userId());
+    } else if (Clips.find({episode_id:this.episode._id}).count() > 0) {
       Meteor.call('mark_episode_edited', this.episode._id, function(err, data) {
-        //show giant green checkmark in top right, wait 3 seconds, redirect
         if (err) {
           Session.set('message', err);
         } else {
@@ -213,7 +217,6 @@ Template.editor.events({
         }
       });
     } else {
-      //send message saying do your job.
       Session.set('message', 'Please add a clip before submitting');
     }
   },
@@ -225,11 +228,16 @@ Template.editor.events({
     Session.set('message', null);
     Meteor.call('unclaim_episode', this.episode._id, Meteor.userId());
   },
+  'click #start_trial': function(e, tmpl) {
+    Session.set('message', null);
+    Meteor.call('start_trial', Meteor.userId());
+  },
   'click #submit_clip': function(e, tmpl) {
     Session.set('message', null);
     validate_submission(
       this.episode._id,
       function(data) { //success
+        data['clip_data']['trial'] = Session.get('trial');
         Meteor.call(
           'create_clip', data,
           function(err, data) {
@@ -383,7 +391,7 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
         end: time_to_seconds(end),
         notes: $('#notes').text(),
         episode_id: episode_id,
-        editor_id: Meteor.user()._id,
+        editor_id: Meteor.userId(),
         created_at: timestamp,
         links: Session.get('current_clip_links')
       },

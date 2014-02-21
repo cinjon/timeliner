@@ -20,16 +20,20 @@
 
       {{else}}
       <div class="col-md-2" style="padding-right:0px">
-        {{#if is_unclaimed}}
-        <button class="btn btn-primary btn-sm right" id="claim_episode" href="#">Claim Episode</button>
-        {{/if}}
+        {{#if is_trial}}
+          <button class="btn btn-primary btn-sm right" id="start_trial">Start</button>
+        {{else}}
+          {{#if is_unclaimed}}
+          <button class="btn btn-primary btn-sm right" id="claim_episode" href="#">Claim Episode</button>
+          {{/if}}
 
-        {{#if is_claimed}}
-        <button class="btn btn-primary btn-sm right" href="#">Episode Claimed</button>
-        {{/if}}
+          {{#if is_claimed}}
+          <button class="btn btn-primary btn-sm right" href="#">Episode Claimed</button>
+          {{/if}}
 
-        {{#if is_claimer}}
-        <button class="btn btn-primary btn-sm right" id="unclaim_episode">Unclaim Episode</button>
+          {{#if is_claimer}}
+          <button class="btn btn-primary btn-sm right" id="unclaim_episode">Unclaim Episode</button>
+          {{/if}}
         {{/if}}
       </div>
       {{/if}}
