@@ -21,27 +21,9 @@
       {{else}}
       <div class="col-md-2" style="padding-right:0px">
         {{#if is_trial}}
-          {{#if currentUser}}
-            {{#if is_trial_running}}
-              <button class="btn btn-info btn-sm right">Started</small>
-            {{else}}
-              <button class="btn btn-primary btn-sm right" id="start_trial">Start</button>
-            {{/if}}
-          {{else}}
-              <button class="btn btn-info bnt-sm right">Please Log In</small>
-          {{/if}}
+          {{> trial_buttons}}
         {{else}}
-          {{#if is_unclaimed}}
-          <button class="btn btn-primary btn-sm right" id="claim_episode" href="#">Claim Episode</button>
-          {{/if}}
-
-          {{#if is_claimed}}
-          <button class="btn btn-primary btn-sm right" href="#">Episode Claimed</button>
-          {{/if}}
-
-          {{#if is_claimer}}
-          <button class="btn btn-primary btn-sm right" id="unclaim_episode">Unclaim Episode</button>
-          {{/if}}
+          {{> editor_buttons}}
         {{/if}}
       </div>
       {{/if}}
@@ -117,12 +99,18 @@
   {{/if}}
 </template>
 
-<template name="episode_title">
-  <div class="row" style="max-height:39px;">
-    <h4 class="left resizeMe">{{episode.name}}</h4>
-    <h4 class="left resizeMe" style="margin-left: 10px; margin-right: 10px; text-align: center;">from</h4>
-    <h4 class="left resizeMe">{{show.name}} {{episode.number}}</h4>
-  </div>
+<template name="editor_buttons">
+  {{#if is_unclaimed}}
+  <button class="btn btn-primary btn-sm right" id="claim_episode" href="#">Claim Episode</button>
+  {{/if}}
+
+  {{#if is_claimed}}
+  <button class="btn btn-primary btn-sm right" href="#">Episode Claimed</button>
+  {{/if}}
+
+  {{#if is_claimer}}
+  <button class="btn btn-primary btn-sm right" id="unclaim_episode">Unclaim Episode</button>
+  {{/if}}
 </template>
 
 <template name="editor_timing_input">
@@ -248,7 +236,7 @@
       <div class="col-md-5" style="padding-right:0px">
         <div class="editor_text_post">
           <ul style="list-style-type: none; padding-left:0px">
-            {{#each link_objs}}
+            {{#each links}}
             <li>
               <a clip_id="{{../_id}}" class="remove_link" style="cursor:pointer"><i class="fa fa-times"></i></a>
               <a href="{{url}}"><span>{{text}}</span></a>
@@ -259,4 +247,28 @@
       </div>
     </div>
   </section>
+</template>
+
+<template name="episode_title">
+  <div class="row" style="max-height:39px;">
+    <h4 class="left resizeMe">{{episode.name}}</h4>
+    <h4 class="left resizeMe" style="margin-left: 10px; margin-right: 10px; text-align: center;">from</h4>
+    <h4 class="left resizeMe">{{show.name}} {{episode.number}}</h4>
+  </div>
+</template>
+
+<template name="trial_buttons">
+  {{#if currentUser}}
+    {{#if is_trial_running}}
+      <button class="btn btn-info btn-sm right">Started</small>
+    {{else}}
+      {{#if is_trial_complete}}
+        <button class="btn btn-primary btn-sm right">Thanks!</button>
+      {{else}}
+        <button class="btn btn-primary btn-sm right" id="start_trial">Start</button>
+      {{/if}}
+    {{/if}}
+  {{else}}
+    <button class="btn btn-info bnt-sm right">Please Log In</small>
+  {{/if}}
 </template>

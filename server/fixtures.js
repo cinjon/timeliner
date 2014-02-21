@@ -1,10 +1,6 @@
 Meteor.startup(function() {
   //bootstrap an empty db
-  console.log('yoooo');
-
   if (Shows.find().count() === 0) {
-    console.log('in show count');
-
     var timestamp = (new Date()).getTime();
 
     var cinjon_id = Accounts.createUser({
@@ -19,7 +15,6 @@ Meteor.startup(function() {
       username:'matt'
     });
     Roles.addUsersToRoles(matt_id, ['admin', 'editor', 'user-admin']);
-    console.log('past users');
 
     var nextmarket_id = Shows.insert({
       name: 'NextMarket',
@@ -57,7 +52,6 @@ Meteor.startup(function() {
       description:null
     });
 
-    console.log('inserted shows');
     var gottfried_id = Episodes.insert({
       name: 'Dr. Sara Gottfried',
       home_url: 'http://www.fatburningman.com/dr-sara-gottfried-hormones-for-men/',
@@ -200,41 +194,32 @@ Meteor.startup(function() {
       show_route: 'Common-Sense-With-Dan-Carlin'
     });
 
-    console.log('inserted episodes');
   }
 
-  console.log('yo')
   update_episodes_approved();
-  console.log('hi ya');
-  make_empty_trial(commonsense_id, 'Common-Sense-With-Dan-Carlin', 'Monopolizing the Democracy',
-                   'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3', 257, 2538);
-});
 
-var update_episodes_approved = function() {
-  Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
-}
-
-var make_empty_trial = function(show_id, show_route, name, s3, number, seconds) {
-  console.log('in met');
   var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL'});
   if (trial) {
-    console.log('have trial');
     return;
   } else {
-    console.log('ins trial');
     var trial_id = Trials.insert({
-      name: name,
+      name: 'Monopolizing the Democracy',
       created_at: timestamp,
-      show_id: show_id,
+      show_id: commonsense_id,
       edited: false,
-      s3: s3,
-      seconds: seconds,
-      number: number,
-      show_route: show_route,
+      s3: 'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3',
+      seconds: 2538,
+      number: 257,
+      show_route: 'Common-Sense-With-Dan-Carlin',
       started_time: null,
       completed_time: null,
       user_id: 'TEMPLATE_TRIAL',
       links: []
     });
   }
+
+});
+
+var update_episodes_approved = function() {
+  Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
 }

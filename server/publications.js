@@ -8,6 +8,11 @@ Meteor.publish('clips_from_episode', function(show_route, number) {
   });
 });
 
+Meteor.publish('clips_from_trial', function(user_id) {
+  var trial = Trials.findOne({user_id:user_id});
+  return Clips.find({episode_id:trial._id});
+});
+
 Meteor.publish('editors', function(show_route, number) {
   //TODO: after making user creation hooks, limit this to username for editors
   return Meteor.users.find({}, function(user) {
