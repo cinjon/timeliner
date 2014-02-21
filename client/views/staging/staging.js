@@ -5,10 +5,9 @@ Template.staging.helpers({
   }
 });
 
-// Template.unapproved_episode({
-//   links_count: function() {
-//     console.log(this);
-//     return this.links.length;
-//   }
-// });
-
+Template.unapproved_episode({
+  links_count: function() {
+    console.log(this);
+    return this.links.length;
+  }
+});
