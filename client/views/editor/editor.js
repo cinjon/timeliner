@@ -10,6 +10,11 @@ Template.editor.created = function() {
   Session.set('editing_clip', false);
 }
 
+Template.editor.destroyed = function() {
+  Session.set('current_char_counter', null);
+  Session.set('message', null);
+}
+
 Template.editor.rendered = function() {
   var height = $('#player').height();
   $('#editor_start_back_parent').css("height", height);
@@ -18,11 +23,6 @@ Template.editor.rendered = function() {
   $('#skip_forward_button').closest('div').css("bottom", 0);
   $('#skip_back_button').closest('div').css("bottom", 0);
   $('#link_text').closest('div').css("bottom", 0);
-}
-
-Template.editor.destroyed = function() {
-  Session.set('current_char_counter', null);
-  Session.set('message', null);
 }
 
 Template.episode_title.rendered = function() {
@@ -350,6 +350,26 @@ var has_time = function(time) {
   return true;
 }
 
+var reset_editor_text_notes = function(element) {
+  Session.set('editing_clip', false);
+  element.setAttribute('contentEditable', 'false');
+  element.style.cursor = 'pointer';
+}
+
+var reset_time = function() {
+  Session.set('message', null);
+  $('#start_time').val('00:00:00');
+  $('#end_time').val('00:00:00');
+}
+
+var reset_text = function() {
+  Session.set('current_char_counter', 0);
+  Session.set('current_clip_links', []);
+  $('#notes').text('');
+  $('#link_text').val('');
+  $('#link_url').val('');
+}
+
 var time_to_seconds = function(time) {
   var parts = time.split(':');
   return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
@@ -399,24 +419,4 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
       episode_id: episode_id
     });
   }
-}
-
-var reset_time = function() {
-  Session.set('message', null);
-  $('#start_time').val('00:00:00');
-  $('#end_time').val('00:00:00');
-}
-
-var reset_text = function() {
-  Session.set('current_char_counter', 0);
-  Session.set('current_clip_links', []);
-  $('#notes').text('');
-  $('#link_text').val('');
-  $('#link_url').val('');
-}
-
-var reset_editor_text_notes = function(element) {
-  Session.set('editing_clip', false);
-  element.setAttribute('contentEditable', 'false');
-  element.style.cursor = 'pointer';
 }

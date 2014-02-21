@@ -1,3 +1,8 @@
+Template.editor_player.destroyed = function() {
+    Meteor.Keybindings.removeAll();
+    dispose_video();
+};
+
 Template.editor_player.rendered = function() {
   load_video(0);
 
@@ -56,17 +61,12 @@ Template.editor_player.rendered = function() {
   });
 };
 
-Template.view_player.rendered = function() {
-    load_video(998);
-};
-
-Template.editor_player.destroyed = function() {
-    Meteor.Keybindings.removeAll();
-    dispose_video();
-};
-
 Template.view_player.destroyed = function() {
     dispose_video();
+};
+
+Template.view_player.rendered = function() {
+    load_video(0);
 };
 
 var dispose_video = function() {
