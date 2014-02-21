@@ -11,4 +11,3 @@ Template.unapproved_episode({
     return this.links.length;
   }
 });
-
