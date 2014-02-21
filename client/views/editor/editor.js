@@ -59,9 +59,6 @@ Template.editable_clip.helpers({
       return user.emails[0].address;
     }
   },
-  link_objs: function() {
-    return Links.find({_id:{$in:this.links}});
-  },
   editing_this_clip: function() {
     return Session.get('editing_clip') == this._id
   },
@@ -113,27 +110,14 @@ Template.editor.helpers({
   getMessage: function() {
     return Session.get('message');
   },
-  is_claimed: function(e, tmpl) {
-    if (this.episode) {
-      var claimer_id = this.episode.claimer_id;
-      return !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
-    }
-  },
   is_claimer: function() {
-    return (client_global_has_role(['admin', 'editor']) && this.episode && client_global_is_claimer(this.episode.claimer_id)) || Session.get('trial_running')
-  },
-  is_unclaimed: function(e, tmpl) {
-    return this.episode && client_global_unclaimed(this.episode.claimer_id);
+    return is_claimer(this.episode);
   },
   is_completed: function() {
     return Session.get('is_completed');
   },
   is_trial: function() {
     return Session.get('trial');
-  },
-  is_trial_running: function() {
-    console.log(Session.get('trial_running'));
-    return Session.get('trial_running');
   },
   link_text: function() {
     return {
@@ -158,6 +142,21 @@ Template.editor.helpers({
       'label': 'Start',
       'id': 'start_time'
     };
+  }
+});
+
+Template.editor_buttons.helpers({
+  is_unclaimed: function() {
+    return this.episode && client_global_unclaimed(this.episode.claimer_id);
+  },
+  is_claimed: function() {
+    if (this.episode) {
+      var claimer_id = this.episode.claimer_id;
+      return !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
+    }
+  },
+  is_claimer: function() {
+    return is_claimer(this.episode);
   }
 });
 
@@ -237,7 +236,6 @@ Template.editor.events({
   'click #start_trial': function(e, tmpl) {
     Session.set('message', null);
     Meteor.call('start_trial', Meteor.userId(), function() {
-      console.log('starting trial')
       Session.set('trial_running', true)
     });
   },
@@ -342,6 +340,14 @@ Template.editor_timing_input.events({
   }
 });
 
+Template.trial_buttons.helpers({
+  is_trial_running: function() {
+    return Session.get('trial_running');
+  },
+  is_trial_complete: function() {
+    return Trials.find({user_id:Meteor.userId(), completed_time:{$ne:null}}).count() > 0;
+  }
+});
 
 // FUNCTIONS
 
@@ -429,3 +435,7 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
     });
   }
 }
+
+var is_claimer = function(episode) {
+    return (client_global_has_role(['admin', 'editor']) && episode && client_global_is_claimer(episode.claimer_id)) || Session.get('trial_running');
+};
