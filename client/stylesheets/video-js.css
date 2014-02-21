@@ -1,6 +1,6 @@
 /*!
 Video.js Default Styles (http://videojs.com)
-Version 4.3.0
+Version 4.4.0
 Create your own skin at http://designer.videojs.com
 */
 /* SKIN
@@ -104,10 +104,10 @@ The default control bar that is a container for most of the controls.
 }
 /* Hide the control bar when the video is playing and the user is inactive  */
 .vjs-default-skin.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
-/*  display: block;
+  /*display: block;
   visibility: hidden;
   opacity: 0;
-  /* transition
+  /* transition */
   -webkit-transition: visibility 1s, opacity 1s;
   -moz-transition: visibility 1s, opacity 1s;
   -o-transition: visibility 1s, opacity 1s;
@@ -117,7 +117,7 @@ The default control bar that is a container for most of the controls.
   /*display: none;*/
 }
 .vjs-default-skin.vjs-using-native-controls .vjs-control-bar {
-  /*display: none;*/
+ /* display: none;*/
 }
 /* IE8 is flakey with fonts, and you have to change the actual content to force
 fonts to show/hide properly.

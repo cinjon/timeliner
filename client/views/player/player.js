@@ -20,7 +20,6 @@ Template.editor_player.rendered = function() {
       } else {
         videojs("#player").pause();
       }
-      e.preventDefault();
     },
     'ctrl+,': function () {
      global_skip_player("Back");
