@@ -59,7 +59,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: fatman_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/fat-burning-man/82.mp3',
       home_notes: null,
       seconds: null,
@@ -73,7 +73,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: primal_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/primal-blueprint-podcast/4.mp3',
       home_notes: null,
       seconds: null,
@@ -87,7 +87,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: primal_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/primal-blueprint-podcast/5.mp3',
       home_notes: null,
       seconds: null,
@@ -101,7 +101,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: randomshow_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/the-random-show/18.mp3',
       home_notes: null,
       seconds: null,
@@ -115,7 +115,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: randomshow_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/the-random-show/19.mp3',
       home_notes: null,
       seconds: null,
@@ -129,7 +129,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: randomshow_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/the-random-show/20.mp3',
       home_notes: null,
       seconds: null,
@@ -143,7 +143,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: randomshow_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/the-random-show/21.mp3',
       home_notes: null,
       seconds: null,
@@ -157,7 +157,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: randomshow_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/the-random-show/22.mp3',
       home_notes: null,
       seconds: null,
@@ -173,7 +173,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: nextmarket_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/nextmarket-podcast/66.mp3',
       home_notes: null,
       seconds: 2962,
@@ -187,7 +187,7 @@ Meteor.startup(function() {
       updated_at: null,
       show_id: commonsense_id,
       edited: false,
-      claimed_id: null,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3',
       seconds: 2538,
       number: 257,
@@ -197,11 +197,10 @@ Meteor.startup(function() {
   }
 
   update_episodes_approved();
+  update_episodes_claimeid();
 
   var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL'});
-  if (trial) {
-    return;
-  } else {
+  if (!trial) {
     var trial_id = Trials.insert({
       name: 'Monopolizing the Democracy',
       created_at: timestamp,
@@ -222,4 +221,13 @@ Meteor.startup(function() {
 
 var update_episodes_approved = function() {
   Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
+}
+
+var update_episodes_claimeid = function() {
+  Episodes.find().forEach(function(episode) {
+      var claimed = episode.claimed_id;
+      if ('claimed_id' in episode) {
+          Episodes.update({_id:episode._id}, {$set:{claimer_id:claimed}, $unset:{claimed_id:claimed}});
+      }
+  });
 }
