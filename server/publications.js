@@ -10,6 +10,9 @@ Meteor.publish('clips_from_episode', function(show_route, number) {
 
 Meteor.publish('clips_from_trial', function(user_id) {
   var trial = Trials.findOne({user_id:user_id});
+  if (!trial) {
+    trial = Trials.findOne({user_id:"TEMPLATE_TRIAL"});
+  }
   return Clips.find({episode_id:trial._id});
 });
 
@@ -49,18 +52,6 @@ Meteor.publish('home_shows_episodes', function() {
   });
 });
 
-Meteor.publish('links_from_episode', function(show_route, number) {
-  var episode = Episodes.findOne({
-    show_route: show_route,
-    number: number
-  });
-  return Links.find({}, {
-    _id: {
-      $in: episode.links
-    }
-  });
-});
-
 Meteor.publish('show_from_route', function(show_route) {
   return Shows.find({
     show_route: show_route
@@ -82,7 +73,7 @@ Meteor.publish('shows_with_unedited_episodes', function() {
 });
 
 Meteor.publish('trial', function(user_id) {
-  return Trials.find({user_id:user_id, completed_time:null});
+  return Trials.find({user_id:user_id});
 });
 
 Meteor.publish('trial_shows', function() {
