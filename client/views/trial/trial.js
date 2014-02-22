@@ -14,9 +14,17 @@ Template.test_your_might.helpers({
     } else {
       var episode = this.episode;
     }
-    return {
-      episode: episode,
-      show: Shows.findOne({show_route:episode.show_route})
+
+    if (episode) {
+        return {
+            episode: episode,
+            show: Shows.findOne({show_route:episode.show_route})
+        }
+    } else {
+        return {
+            episode: undefined,
+            show: undefined,
+        }
     }
   },
   episode: function() {
