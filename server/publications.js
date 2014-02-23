@@ -52,6 +52,10 @@ Meteor.publish('home_shows_episodes', function() {
   });
 });
 
+Meteor.publish(null, function (){
+  return Meteor.roles.find({})
+})
+
 Meteor.publish('show_from_route', function(show_route) {
   return Shows.find({
     show_route: show_route
