@@ -308,10 +308,10 @@ Template.editor_reset_button.events({
 
 Template.editor_skip_button.events({
   'click span': function(e, tmpl) {
-    return global_skip_player(this.label);
+    return global_skip_player(event, this.label);
   },
   'click button': function(e, tmpl) {
-    return global_skip_player(this.label);
+    return global_skip_player(event, this.label);
   }
 });
 

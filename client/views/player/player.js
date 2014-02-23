@@ -22,40 +22,33 @@ Template.editor_player.rendered = function() {
       }
     },
     'ctrl+,': function () {
-     global_skip_player("Back");
+     global_skip_player(event, "Back");
     },
     'ctrl+.': function () {
-      global_skip_player("Forward");
+      global_skip_player(event, "Forward");
     },
     'ctrl+1': function () {
       time = videojs("#player").currentTime();
       global_record_time("start_time");
-      e.preventDefault();
     },
     'ctrl+2': function () {
       time = videojs("#player").currentTime();
       global_record_time("end_time");
-      e.preventDefault();
     },
     'ctrl+3': function () {
       $('#notes').focus();
-      e.preventDefault();
     },
     'ctrl+4': function () {
       $('#link_url').focus();
-      e.preventDefault();
     },
     'ctrl+5': function () {
       $('#link_text').focus();
-      e.preventDefault();
     },
     'ctrl+6': function () {
       $('#add_link').click();
-      e.preventDefault();
     },
     'ctrl+enter': function () {
       $('#submit_clip').click();
-      e.preventDefault();
     }
   });
 };
