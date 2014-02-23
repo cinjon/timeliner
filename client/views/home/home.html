@@ -1,4 +1,5 @@
 <template name="home">
+  {{#if open_for_business}}
   <div class="row">
     <div class="col-md-4">
       <div class="row">
@@ -26,4 +27,30 @@
       </div>
     </div>
   </div>
+  {{else}}
+  {{> not_open_home}}
+  {{/if}}
+</template>
+
+<template name="not_open_home">
+  <section class="post">
+  <div class="row">
+    <h3>Do you like podcasts, documentaries or interviews?</h3>
+  </div>
+  <div class="row">
+    <h5>Can you write clear, concise summaries, and google random topics faster than anyone you know?</h5>
+  </div>
+  <div class="row">
+    <p>We need help summarizing interesting audio and video content. You can work from home, at your own pace. We pay $15 per hour and make it easy for you to transcribe and markup content using a custom web tool.</p>
+  </div>
+  <p>Send us a short note that includes:</p>
+  <ul>
+    <li>Your 3 favorite podcasts or Youtube channels (and why)</li>
+    <li>Your 3 favorite follows on Twitter (and why)</li>
+    <li>Why you would be great at this</li>
+    <li>Your expected availability per week (in total)</li>
+  </ul>
+  <hr>
+  <p>Email <a href="mailto:matt@timelined.com?subject=Editor Flyer">matt@timelined.com</a> with 'Editor Flyer' in the subject</p>
+  </section>
 </template>
