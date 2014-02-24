@@ -52,10 +52,6 @@ Meteor.publish('home_shows_episodes', function() {
   });
 });
 
-Meteor.publish(null, function (){
-  return Meteor.roles.find({})
-})
-
 Meteor.publish('show_from_route', function(show_route) {
   return Shows.find({
     show_route: show_route
@@ -99,6 +95,10 @@ Meteor.publish('unedited_episodes', function() {
   return Episodes.find({
     edited: false
   });
+});
+
+Meteor.publish("user_roles", function(user_id) {
+  return Meteor.users.find({_id:user_id}, {fields:{roles:true}});
 });
 
 var home_shows = function() {
