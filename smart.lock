@@ -11,13 +11,14 @@
       "houston": {},
       "keybindings-mod": {
         "path": "packages/meteor-keybindings"
-      }
+      },
+      "mailgun": {}
     },
     "packages": {
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.2",
-        "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
+        "tag": "v0.6.4",
+        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
       },
       "roles": {
         "git": "https://github.com/alanning/meteor-roles.git",
@@ -31,8 +32,8 @@
       },
       "accounts-entry": {
         "git": "https://github.com/BeDifferential/accounts-entry.git",
-        "tag": "v0.6.0",
-        "commit": "54cd9585ea58c88f3dc2d736f3ae7a6fa8432c13"
+        "tag": "v0.6.1",
+        "commit": "8e42d4abca33d6a00d236d198589fe4924729d09"
       },
       "winston": {
         "git": "https://github.com/tomrogers3/meteor-winston.git",
@@ -51,6 +52,11 @@
       },
       "keybindings-mod": {
         "path": "packages/meteor-keybindings"
+      },
+      "mailgun": {
+        "git": "https://github.com/cunneen/meteor-mailgun.git",
+        "tag": "v0.9.1",
+        "commit": "5ebfa17d4dadc4ae4b3784903d6bc252d09126e2"
       },
       "just-i18n": {
         "git": "https://github.com/subhog/meteor-just-i18n.git",

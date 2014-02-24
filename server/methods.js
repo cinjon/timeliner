@@ -65,6 +65,23 @@ Meteor.methods({
       }
     });
   },
+  send_email: function(mail_fields) {
+    console.log("about to send email...");
+    check([mail_fields.to, mail_fields.from, mail_fields.subject, mail_fields.text, mail_fields.html], [String]);
+
+    // Let other method calls from the same client start running,
+    // without waiting for the email sending to complete.
+    this.unblock();
+
+    Meteor.Mailgun.send({
+      to: mail_fields.to,
+      from: mail_fields.from,
+      subject: mail_fields.subject,
+      text: mail_fields.text,
+      html: mail_fields.html
+    });
+    console.log("email sent to " + mail_fields.to + " from " + mail_fields.from);
+  },
   start_trial: function(user_id) {
     var timestamp = (new Date()).getTime();
     var template = Trials.findOne({user_id:"TEMPLATE_TRIAL"});

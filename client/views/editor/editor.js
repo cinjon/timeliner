@@ -209,7 +209,21 @@ Template.editor.events({
     }
     if (Session.get('trial')) { //trial editor
       Meteor.call('end_trial', Meteor.userId(), function() {
-        Session.set('trial_running', false)
+        Session.set('trial_running', false);
+        Method.call('send_email', {
+          to: 'admin@timelined.com',
+          from: 'test-your-might@timelined.com',
+          subject: 'Editor submission from ' + Meteor.userId(),
+          text: '',
+          html: ''
+        });
+        Method.call('send_email', {
+          to: emails[0].address,
+          from: 'test-your-might@timelined.com',
+          subject: 'Editor Submission',
+          text: 'Thanks so much for the submission. We are going to look over it and will get back to you asap',
+          html: ''
+        });
       });
     } else if (Clips.find({episode_id:this.episode._id}).count() > 0) {
       Meteor.call('mark_episode_edited', this.episode._id, function(err, data) {

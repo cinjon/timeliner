@@ -9,6 +9,7 @@
     "houston": {},
     "keybindings-mod": {
       "path": "./packages/meteor-keybindings"
-    }
+    },
+    "mailgun": {}
   }
 }
