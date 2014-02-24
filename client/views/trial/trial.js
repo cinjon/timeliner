@@ -4,7 +4,7 @@ Template.test_your_might.created = function() {
 
 Template.test_your_might.destroyed = function() {
   Session.set('trial', false);
-  Session.set('trial_running', null);
+  Session.set('trial_running', false);
 }
 
 Template.test_your_might.helpers({
@@ -36,12 +36,13 @@ Template.test_your_might.helpers({
   },
 });
 
+var should_trial_run = function() {
+  return Trials.find({user_id:Meteor.userId(), started_time:{$ne:null}, completed_time:null}).count() > 0;
+}
+
 if (Meteor.isClient) {
   Meteor.subscribe('trial', Meteor.userId(), function() {
-    Session.set('trial_running',
-                Trials.find({user_id:Meteor.userId(),
-                             started_time:{$ne:null},
-                             completed_time:null}).count() > 0);
+    Session.set('trial_running', should_trial_run());
   });
 
   Deps.autorun( function () {
@@ -49,7 +50,7 @@ if (Meteor.isClient) {
       Meteor.subscribe('clips_from_trial', Meteor.userId());
     }
   });
-
 }
+
 
 

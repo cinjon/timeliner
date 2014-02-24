@@ -16,6 +16,7 @@ Template.editor.destroyed = function() {
 }
 
 Template.editor.rendered = function() {
+  Session.set('trial_running', null); //hack to stop editor from showing both claim and unclaim buttons when someone is set as an editor but has an open trial. this *only* occurs in testing.
   var height = $('#player').height();
   $('#editor_start_back_parent').css("height", height);
   $('#editor_end_forward_parent').css("height", height);
@@ -437,5 +438,6 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
 }
 
 var is_claimer = function(episode) {
-    return (client_global_has_role(['admin', 'editor']) && episode && client_global_is_claimer(episode.claimer_id)) || Session.get('trial_running');
+  console.log(Session.get('trial_running'));
+  return (client_global_has_role(['admin', 'editor']) && episode && client_global_is_claimer(episode.claimer_id)) || Session.get('trial_running');
 };
