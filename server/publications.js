@@ -19,7 +19,7 @@ Meteor.publish('clips_from_trial', function(user_id) {
 Meteor.publish('editors', function(show_route, number) {
   //TODO: after making user creation hooks, limit this to username for editors
   return Meteor.users.find({}, function(user) {
-    Roles.userIsInRole(user._id, ['editor', 'admin'])
+    Roles.userIsInRole(user._id, ['editor', 'admin']);
   });
 });
 

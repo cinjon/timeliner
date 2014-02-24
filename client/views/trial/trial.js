@@ -36,12 +36,20 @@ Template.test_your_might.helpers({
   },
 });
 
-Deps.autorun(function() {
+if (Meteor.isClient) {
   Meteor.subscribe('trial', Meteor.userId(), function() {
     Session.set('trial_running',
                 Trials.find({user_id:Meteor.userId(),
                              started_time:{$ne:null},
                              completed_time:null}).count() > 0);
   });
-  Meteor.subscribe('clips_from_trial', Meteor.userId());
-});
+
+  Deps.autorun( function () {
+    if (Session.equals('trial_running', true)) {
+      Meteor.subscribe('clips_from_trial', Meteor.userId());
+    }
+  });
+
+}
+
+
