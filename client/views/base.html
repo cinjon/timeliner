@@ -5,12 +5,16 @@
         <ul>
           <h4>{{> custom_account_buttons}}</h4>
         </ul>
+        <br/><br/>
         {{#if user_is_admin}}
+          <h4>Admin Menu</h4>
           <h4><a href="{{pathFor 'admin'}}">Admin</a></h4>
         {{/if}}
         {{#if user_is_editor}}
-          <h4><a href="{{pathFor 'queue'}}">Editor Queue</a></h4>
-          <h4><a href="">Editor FAQ</a></h4>
+          <h4>Editor Menu</h4>
+          <h4><a href="{{pathFor 'queue'}}">Queue</a></h4>
+          <h4><a href="https://hackpad.com/Timelined-Editor-Guidelines-GUkPXCEStLs" target="_blank">Guidelines and FAQ</a></h4>
+          <h4><a href="mailto:support@timelined.com?subject=Editor help">Support</a></h4>
           <br />
           <h4>Hotkeys</h4>
           <ul>
