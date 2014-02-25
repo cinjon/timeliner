@@ -108,6 +108,7 @@ The default control bar that is a container for most of the controls.
   visibility: hidden;
   opacity: 0;
   /* transition */
+  /*
   -webkit-transition: visibility 1s, opacity 1s;
   -moz-transition: visibility 1s, opacity 1s;
   -o-transition: visibility 1s, opacity 1s;
