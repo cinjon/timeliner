@@ -80,6 +80,15 @@
       </div>
     </div>
     {{/if}}
+    {{#if is_trial}}
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <button class="btn btn-block btn-primary btn-sm" id="submit_clip">Record this clip's notes and links</button>
+        </div>
+      </div>
+    </div>
+    {{/if}}
     <hr style="" />
   </section>
 
@@ -90,6 +99,14 @@
   {{/with}}
 
   {{#if is_claimer}}
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <button style="min-width:119px;" class="btn btn-primary btn-block btn-sm" id="submit_episode">Submit Episode</button>
+    </div>
+  </div>
+  {{/if}}
+  {{#if is_trial}}
   <hr>
   <div class="row">
     <div class="col-md-12">
