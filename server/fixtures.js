@@ -232,8 +232,60 @@ Meteor.startup(function() {
   }
 
   update_episodes_approved();
+<<<<<<< HEAD
   update_episodes_claimedid();
   make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/the-random-show/20.mp3'}));
   make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/nextmarket-podcast/66.mp3'}));
   make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3'}));
 });
+=======
+  update_episodes_claimeid();
+
+
+  // SETUP TRIALS
+  var timestamp = (new Date()).getTime();
+
+  var trial_show = Shows.findOne({name: 'Exponent.fm'});
+  if (!trial_show) {
+    trial_show = Shows.insert({
+      name: 'Exponent.fm',
+      home_url: 'http://exponent.fm',
+      show_route: 'exponent',
+      created_at: timestamp,
+      description: null
+    });
+  }
+
+  var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL'});
+  if (!trial) {
+    var trial_id = Trials.insert({
+      name: 'Exponent 001',
+      created_at: timestamp,
+      show_id: trial_show._id,
+      edited: false,
+      s3: 'http://s3timeliner.s3.amazonaws.com/exponent/1.mp3',
+      seconds: 2808,
+      number: 1,
+      show_route: 'exponent',
+      started_time: null,
+      completed_time: null,
+      user_id: 'TEMPLATE_TRIAL',
+      links: []
+    });
+  }
+
+});
+
+var update_episodes_approved = function() {
+  Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
+}
+
+var update_episodes_claimeid = function() {
+  Episodes.find().forEach(function(episode) {
+      var claimed = episode.claimed_id;
+      if ('claimed_id' in episode) {
+          Episodes.update({_id:episode._id}, {$set:{claimer_id:claimed}, $unset:{claimed_id:claimed}});
+      }
+  });
+}
+>>>>>>> added twitter handle to home page, switched fixtures to Eponent.fm trial data, updated meteor release
