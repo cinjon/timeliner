@@ -232,14 +232,11 @@ Meteor.startup(function() {
   }
 
   update_episodes_approved();
-<<<<<<< HEAD
   update_episodes_claimedid();
   make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/the-random-show/20.mp3'}));
   make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/nextmarket-podcast/66.mp3'}));
   make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3'}));
-});
-=======
-  update_episodes_claimeid();
+
 
 
   // SETUP TRIALS
@@ -288,4 +285,3 @@ var update_episodes_claimeid = function() {
       }
   });
 }
->>>>>>> added twitter handle to home page, switched fixtures to Eponent.fm trial data, updated meteor release
