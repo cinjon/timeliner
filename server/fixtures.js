@@ -246,7 +246,7 @@ Meteor.startup(function() {
   var trial_episode = Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/exponent/1.mp3'});
   if (!trial_episode) {
     trial_episode = Episodes.insert({
-      name: 'Exponent 001',
+      name: 'The Garbage Truck Song',
       home_url: 'http://media.blubrry.com/exponent/p/content.blubrry.com/exponent/Exponent-001.mp3',
       created_at: null,
       updated_at: null,
