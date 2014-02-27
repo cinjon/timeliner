@@ -231,45 +231,41 @@ Meteor.startup(function() {
 
   }
 
-  update_episodes_approved();
-  update_episodes_claimedid();
-  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/the-random-show/20.mp3'}));
-  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/nextmarket-podcast/66.mp3'}));
-  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3'}));
-
-
-
-  // SETUP TRIALS
-  var timestamp = (new Date()).getTime();
+  // setup trial shows not bootstraped from start
 
   var trial_show = Shows.findOne({name: 'Exponent.fm'});
   if (!trial_show) {
     trial_show = Shows.insert({
       name: 'Exponent.fm',
       home_url: 'http://exponent.fm',
-      show_route: 'exponent',
-      created_at: timestamp,
+      show_route: 'Exponent',
       description: null
     });
   }
 
-  var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL'});
-  if (!trial) {
-    var trial_id = Trials.insert({
+  var trial_episode = Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/exponent/1.mp3'});
+  if (!trial_episode) {
+    trial_episode = Episodes.insert({
       name: 'Exponent 001',
-      created_at: timestamp,
+      home_url: 'http://media.blubrry.com/exponent/p/content.blubrry.com/exponent/Exponent-001.mp3',
+      created_at: null,
+      updated_at: null,
       show_id: trial_show._id,
       edited: false,
+      claimer_id: null,
       s3: 'http://s3timeliner.s3.amazonaws.com/exponent/1.mp3',
       seconds: 2808,
       number: 1,
-      show_route: 'exponent',
-      started_time: null,
-      completed_time: null,
-      user_id: 'TEMPLATE_TRIAL',
-      links: []
+      show_route: 'Exponent'
     });
   }
+
+  update_episodes_approved();
+  update_episodes_claimedid();
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/the-random-show/20.mp3'}));
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/nextmarket-podcast/66.mp3'}));
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3'}));
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/exponent/1.mp3'}));
 
 });
 
