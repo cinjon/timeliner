@@ -360,7 +360,8 @@ Template.trial_buttons.helpers({
     return should_trial_run();
   },
   is_trial_complete: function() {
-    return Trials.find({user_id:Meteor.userId(), completed_time:{$ne:null}}).count() > 0;
+    return Trials.find({user_id:Meteor.userId(), show_route:ONLY_TRIAL_ROUTE,
+                        completed_time:{$ne:null}}).count() > 0;
   }
 });
 

@@ -1,3 +1,38 @@
+var update_episodes_approved = function() {
+  Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
+}
+
+var update_episodes_claimedid = function() {
+  Episodes.find().forEach(function(episode) {
+      var claimed = episode.claimed_id;
+      if ('claimed_id' in episode) {
+          Episodes.update({_id:episode._id}, {$set:{claimer_id:claimed}, $unset:{claimed_id:claimed}});
+      }
+  });
+}
+
+var make_trial_episode = function(episode)  {
+  if (!episode) {
+    return;
+  }
+  var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL', show_route:episode.show_route});
+  if (!trial) {
+    var trial_id = Trials.insert({
+      name: episode.name,
+      show_id: episode.show_id,
+      edited: false,
+      s3: episode.s3,
+      seconds: episode.seconds,
+      number: episode.number,
+      show_route: episode.show_route,
+      started_time: null,
+      completed_time: null,
+      user_id: 'TEMPLATE_TRIAL',
+      links: []
+    });
+  }
+}
+
 Meteor.startup(function() {
   //bootstrap an empty db
   if (Shows.find().count() === 0) {
@@ -197,37 +232,8 @@ Meteor.startup(function() {
   }
 
   update_episodes_approved();
-  update_episodes_claimeid();
-
-  var trial = Trials.findOne({user_id:'TEMPLATE_TRIAL'});
-  if (!trial) {
-    var trial_id = Trials.insert({
-      name: 'Monopolizing the Democracy',
-      created_at: timestamp,
-      show_id: commonsense_id,
-      edited: false,
-      s3: 'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3',
-      seconds: 2538,
-      number: 257,
-      show_route: 'Common-Sense-With-Dan-Carlin',
-      started_time: null,
-      completed_time: null,
-      user_id: 'TEMPLATE_TRIAL',
-      links: []
-    });
-  }
-
+  update_episodes_claimedid();
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/the-random-show/20.mp3'}));
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/nextmarket-podcast/66.mp3'}));
+  make_trial_episode(Episodes.findOne({s3:'http://s3timeliner.s3.amazonaws.com/common-sense-with-dan-carlin/257.mp3'}));
 });
-
-var update_episodes_approved = function() {
-  Episodes.update({approved:{$exists:false}}, {$set:{approved:false}}, {multi:true})
-}
-
-var update_episodes_claimeid = function() {
-  Episodes.find().forEach(function(episode) {
-      var claimed = episode.claimed_id;
-      if ('claimed_id' in episode) {
-          Episodes.update({_id:episode._id}, {$set:{claimer_id:claimed}, $unset:{claimed_id:claimed}});
-      }
-  });
-}

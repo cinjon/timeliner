@@ -8,10 +8,10 @@ Meteor.publish('clips_from_episode', function(show_route, number) {
   });
 });
 
-Meteor.publish('clips_from_trial', function(user_id) {
-  var trial = Trials.findOne({user_id:user_id});
+Meteor.publish('clips_from_trial', function(user_id, show_route) {
+  var trial = Trials.findOne({user_id:user_id, show_route:show_route});
   if (!trial) {
-    trial = Trials.findOne({user_id:"TEMPLATE_TRIAL"});
+    trial = Trials.findOne({user_id:"TEMPLATE_TRIAL", show_route:show_route});
   }
   return Clips.find({episode_id:trial._id});
 });

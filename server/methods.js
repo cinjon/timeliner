@@ -33,7 +33,7 @@ Meteor.methods({
   },
   end_trial: function(user_id) {
     var timestamp = (new Date()).getTime();
-    Trials.update({user_id:user_id}, {$set:{completed_time:timestamp, edited:true}});
+    Trials.update({user_id:user_id, show_route:ONLY_TRIAL_ROUTE}, {$set:{completed_time:timestamp, edited:true}});
   },
   mark_episode_edited: function(episode_id) {
     var timestamp = (new Date()).getTime();
@@ -84,7 +84,7 @@ Meteor.methods({
   },
   start_trial: function(user_id) {
     var timestamp = (new Date()).getTime();
-    var template = Trials.findOne({user_id:"TEMPLATE_TRIAL"});
+    var template = Trials.findOne({user_id:"TEMPLATE_TRIAL", show_route:ONLY_TRIAL_ROUTE});
     Trials.insert({
       name: template.name,
       show_id: template.show_id,
