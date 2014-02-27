@@ -357,7 +357,7 @@ Template.editor_timing_input.events({
 
 Template.trial_buttons.helpers({
   is_trial_running: function() {
-    return Session.get('trial_running');
+    return should_trial_run();
   },
   is_trial_complete: function() {
     return Trials.find({user_id:Meteor.userId(), completed_time:{$ne:null}}).count() > 0;
@@ -452,6 +452,5 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
 }
 
 var is_claimer = function(episode) {
-  console.log(Session.get('trial_running'));
   return (client_global_has_role(['admin', 'editor']) && episode && client_global_is_claimer(episode.claimer_id)) || Session.get('trial_running');
 };
