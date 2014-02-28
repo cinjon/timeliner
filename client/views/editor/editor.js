@@ -214,14 +214,14 @@ Template.editor.events({
           to: 'admin@timelined.com',
           from: 'test-your-might@timelined.com',
           subject: 'Trial submission from ' + Meteor.user().emails[0].address,
-          text: '',
-          html: ''
+          text: "",
+          html: trial_results(Meteor.user())
         });
         Meteor.call('send_email', {
           to: Meteor.user().emails[0].address,
           from: 'test-your-might@timelined.com',
           subject: 'Editor Submission',
-          text: "Thanks so much for completeing this. We'll save the results and your contact info. If our queue is full and in need of editors, we'll be in touch!\nSincerely,\nthe Timelined team",
+          text: "Thanks so much for completeing this. We'll save the results and your contact info. If our queue is full and in need of editors, we'll be in touch!\n\nSincerely,\nTimelined",
           html: ''
         });
       });
@@ -412,6 +412,31 @@ var time_in_range = function(time) {
 
 var time_in_order = function(start, end) {
   return time_to_seconds(start) < time_to_seconds(end);
+}
+
+var trial_results = function (user)  {
+  var message = "";
+
+  trial = Trials.findOne({"user_id": user._id});
+  if (trial) {
+    var start_time = new Date(trial.started_time);
+    var end_time = new Date(trial.completed_time);
+    message += "<p>Start: " + start_time.toString() + "<br>Stop: " + end_time.toString() + "</p><hr>";
+  }
+
+  var clips = Clips.find({"editor_id": user._id});
+  if (clips) {
+    clips.forEach(function (clip) {
+      message += "<p>" + global_format_time(clip.start) + " - " + global_format_time(clip.end) + "<br><br>" + clip.notes + "</p>";
+      for (var i = 0, l = clip.links.length; i < l; i++) {
+          var link = clip.links[i];
+          message += "- <a href='" + link.url + "'>" + link.text + "</a><br>";
+      }
+      message += "<hr>";
+    });
+  }
+
+  return message;
 }
 
 var validate_submission = function(episode_id, success_callback, fail_callback) {
