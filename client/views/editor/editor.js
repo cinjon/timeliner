@@ -16,7 +16,6 @@ Template.editor.destroyed = function() {
 }
 
 Template.editor.rendered = function() {
-  Session.set('trial_running', null); //hack to stop editor from showing both claim and unclaim buttons when someone is set as an editor but has an open trial. this *only* occurs in testing.
   var height = $('#player').height();
   $('#editor_start_back_parent').css("height", height);
   $('#editor_end_forward_parent').css("height", height);
@@ -70,13 +69,14 @@ Template.editable_clip.helpers({
 
 Template.editor.helpers({
   completed_clips: function() {
-    return Clips.find({
+    ret = Clips.find({
       episode_id: this._id
     }, {
       sort: {
         start: -1
       }
     });
+    return ret;
   },
   displayMessageStyle: function() {
     if (Session.get('message') == null) {
@@ -148,16 +148,16 @@ Template.editor.helpers({
 
 Template.editor_buttons.helpers({
   is_unclaimed: function() {
-    return this.episode && client_global_unclaimed(this.episode.claimer_id);
+    return !Session.get('trial_running') && this.episode && client_global_unclaimed(this.episode.claimer_id);
   },
   is_claimed: function() {
     if (this.episode) {
       var claimer_id = this.episode.claimer_id;
-      return !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
+      return !Session.get('trial_running') && !client_global_unclaimed(claimer_id) && !client_global_is_claimer(claimer_id);
     }
   },
   is_claimer: function() {
-    return is_claimer(this.episode);
+    return !Session.get('trial_running') && is_claimer(this.episode);
   }
 });
 
@@ -446,8 +446,6 @@ var validate_submission = function(episode_id, success_callback, fail_callback) 
         created_at: timestamp,
         links: Session.get('current_clip_links')
       },
-      ts: timestamp,
-      episode_id: episode_id
     });
   }
 }

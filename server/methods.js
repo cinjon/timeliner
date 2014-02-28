@@ -18,7 +18,6 @@ Meteor.methods({
     });
   },
   create_clip: function(data) {
-    //TODO: set next_clip, previous_clip
     var episode_id = data['episode_id'];
     var count = collision_count(data, episode_id);
     while (!(typeof count === 'number')) {

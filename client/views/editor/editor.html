@@ -71,15 +71,6 @@
       </div>
     </div>
 
-    {{#if is_claimer}}
-    <div class="row">
-      <div class="col-md-8">
-        <div class="row">
-          <button class="btn btn-block btn-primary btn-sm" id="submit_clip">Record this clip's notes and links</button>
-        </div>
-      </div>
-    </div>
-    {{/if}}
     {{#if is_trial}}
     <div class="row">
       <div class="col-md-8">
@@ -88,6 +79,16 @@
         </div>
       </div>
     </div>
+    {{else}}
+      {{#if is_claimer}}
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <button class="btn btn-block btn-primary btn-sm" id="submit_clip">Record this clip's notes and links</button>
+          </div>
+        </div>
+      </div>
+      {{/if}}
     {{/if}}
     <hr style="" />
   </section>
@@ -98,14 +99,6 @@
   {{/each}}
   {{/with}}
 
-  {{#if is_claimer}}
-  <hr>
-  <div class="row">
-    <div class="col-md-12">
-      <button style="min-width:119px;" class="btn btn-primary btn-block btn-sm" id="submit_episode">Submit Episode</button>
-    </div>
-  </div>
-  {{/if}}
   {{#if is_trial}}
   <hr>
   <div class="row">
@@ -113,6 +106,15 @@
       <button style="min-width:119px;" class="btn btn-primary btn-block btn-sm" id="submit_episode">Submit Episode</button>
     </div>
   </div>
+  {{else}}
+    {{#if is_trial}}
+    <hr>
+    <div class="row">
+      <div class="col-md-12">
+        <button style="min-width:119px;" class="btn btn-primary btn-block btn-sm" id="submit_episode">Submit Episode</button>
+      </div>
+    </div>
+    {{/if}}
   {{/if}}
 </template>
 
@@ -270,7 +272,7 @@
   <div class="row" style="max-height:39px;">
     <h4 class="left resizeMe">{{episode.name}}</h4>
     <h4 class="left resizeMe" style="margin-left: 10px; margin-right: 10px; text-align: center;">from</h4>
-    <h4 class="left resizeMe">{{show.name}} {{episode.number}}</h4>
+    <h4 class="left resizeMe">{{show.name}}</h4>
   </div>
 </template>
 
