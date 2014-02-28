@@ -213,7 +213,7 @@ Template.editor.events({
         Meteor.call('send_email', {
           to: 'admin@timelined.com',
           from: 'test-your-might@timelined.com',
-          subject: 'Editor submission from ' + Meteor.userId(),
+          subject: 'Trial submission from ' + Meteor.user().emails[0].address,
           text: '',
           html: ''
         });
@@ -221,7 +221,7 @@ Template.editor.events({
           to: Meteor.user().emails[0].address,
           from: 'test-your-might@timelined.com',
           subject: 'Editor Submission',
-          text: 'Thanks so much for the submission. We are going to look over it and will get back to you asap',
+          text: "Thanks so much for completeing this. We'll save the results and your contact info. If our queue is full and in need of editors, we'll be in touch!\nSincerely,\nthe Timelined team",
           html: ''
         });
       });
